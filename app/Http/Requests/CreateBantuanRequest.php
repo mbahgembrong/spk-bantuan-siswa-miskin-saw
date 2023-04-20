@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Bantuan;
 
-class StoreSiswaDetailRequest extends FormRequest
+class CreateBantuanRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,7 @@ class StoreSiswaDetailRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +24,6 @@ class StoreSiswaDetailRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
-        ];
+        return Bantuan::$rules;
     }
 }

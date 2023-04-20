@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Bantuan;
 
 class UpdateBantuanRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class UpdateBantuanRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +24,8 @@ class UpdateBantuanRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
-        ];
+        $rules = Bantuan::$rules;
+
+        return $rules;
     }
 }
