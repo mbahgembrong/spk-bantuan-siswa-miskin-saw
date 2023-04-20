@@ -5,11 +5,10 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Kriteriadetails</h1>
+                    <h1>Kriteria {{ $kriteria->nama }}</h1>
                 </div>
                 <div class="col-sm-6">
-                    <a class="btn btn-primary float-right"
-                       href="{{ route('kriteriadetails.create') }}">
+                    <a class="btn btn-primary float-right" href="{{ route('kriteriadetails.create', $kriteria->id) }}">
                         Add New
                     </a>
                 </div>
@@ -29,13 +28,11 @@
 
                 <div class="card-footer clearfix">
                     <div class="float-right">
-                        
+
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
-
 @endsection
-

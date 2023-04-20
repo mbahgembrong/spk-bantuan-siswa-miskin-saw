@@ -18,10 +18,9 @@ class CreateKriteriadetailsTable extends Migration
             $table->uuid('id');
             $table->uuid('kriteria_id');
             $table->string('nama');
-            $table->float('bobot')->nullable();
+            $table->float('bobot');
             $table->string('kode')->nullable();
-            $table->string('tipe');
-            $table->string('ket');
+            $table->string('tipe')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Eloquent as Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -26,8 +27,9 @@ class Siswa extends Model
 
     use HasFactory;
 
+    use \App\Traits\TraitUuid;
     public $table = 'siswas';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -70,11 +72,19 @@ class Siswa extends Model
         'nama' => 'required',
         'alamat' => 'required',
         'jenis_kelamin' => 'required',
-        'tanggal_lahir' => 'required|date',
+        'tanggal_lahir' => 'required',
         'ibu' => 'required',
         'ayah' => 'required',
         'foto' => 'required|image'
     ];
 
-    
+    /**
+     * Get all of the siswaDetail for the Siswa
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function siswaDetail()
+    {
+        return $this->hasMany(SiswaDetail::class, 'siswa_id', 'id');
+    }
 }

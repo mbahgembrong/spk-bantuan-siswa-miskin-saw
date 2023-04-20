@@ -4,9 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePenilaianDetailsTable extends Migration
+class CreateSiswaBantuansTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -14,11 +13,11 @@ class CreatePenilaianDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('penilaian_details', function (Blueprint $table) {
+        Schema::create('siswa_bantuans', function (Blueprint $table) {
             $table->uuid('id');
-            $table->uuid('penilaian_id');
-            $table->uuid('kriteria_id');
-            $table->float('bobot')->nullable();
+            $table->uuid('bantuan_id');
+            $table->uuid('siswa_id');
+            $table->float('bobot');
             $table->string('keterangan')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -32,6 +31,6 @@ class CreatePenilaianDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('penilaian_details');
+        Schema::dropIfExists('siswa_bantuans');
     }
 }

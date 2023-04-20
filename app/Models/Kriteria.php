@@ -21,8 +21,10 @@ class Kriteria extends Model
 
     use HasFactory;
 
+    use \App\Traits\TraitUuid;
+
     public $table = 'kriterias';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -31,6 +33,8 @@ class Kriteria extends Model
     public $fillable = [
         'nama',
         'bobot',
+        'jenis',
+        'kode',
         'tipe'
     ];
 
@@ -42,6 +46,8 @@ class Kriteria extends Model
     protected $casts = [
         'nama' => 'string',
         'bobot' => 'float',
+        'jenis' => 'string',
+        'kode' => 'string',
         'tipe' => 'string'
     ];
 
@@ -52,9 +58,19 @@ class Kriteria extends Model
      */
     public static $rules = [
         'nama' => 'required',
-        'bobot' => 'required||numeric|between:0,99.99',
-        'tipe' => 'required'
+        'bobot' => 'required||numeric|between:0,100',
+        'jenis' => 'required',
+        'kode' => 'nullable',
+        'tipe' => 'nullable'
     ];
 
-    
+    /**
+     * Get all of the kriteriaDetail for the Kriteria
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function kriteriaDetail()
+    {
+        return $this->hasMany(Kriteriadetail::class, 'kriteria_id', 'id');
+    }
 }

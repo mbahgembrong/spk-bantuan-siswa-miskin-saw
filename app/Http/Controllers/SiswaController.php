@@ -5,7 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateSiswaRequest;
 use App\Http\Requests\UpdateSiswaRequest;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Kriteria;
+use App\Models\Kriteriadetail;
 use App\Models\Siswa;
+use App\Models\SiswaDetail;
+use App\Models\SubSiswaDetail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
@@ -35,7 +40,8 @@ class SiswaController extends AppBaseController
      */
     public function create()
     {
-        return view('siswas.create');
+        $kriterias = Kriteria::all();
+        return view('siswas.create', compact('kriterias'));
     }
 
     /**
@@ -48,10 +54,54 @@ class SiswaController extends AppBaseController
     public function store(CreateSiswaRequest $request)
     {
         $input = $request->all();
-
+        $input['tanggal_lahir'] = Carbon::createFromFormat('d/m/Y', $input['tanggal_lahir'])->format('Y-m-d');
+        // dd($input);
+        $kriteriaSingle = [];
+        $kriteriaMultiple = [];
+        foreach ($input as $key => $value) {
+            if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/', $key)) {
+                $kriteriaSingle[$key] = $value;
+            } else if (preg_match('/^[A-Za-z]+_[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/', $key)) {
+                $kriteriaMultiple[$key] = $value;
+            }
+        }
         /** @var Siswa $siswa */
         $siswa = Siswa::create($input);
-
+        foreach ($kriteriaSingle as $key => $value) {
+            $kriteria = Kriteriadetail::find($value);
+            SiswaDetail::create([
+                'siswa_id' => $siswa->id,
+                'kriteria_id' => $key,
+                'kriteria_detail_id' => $value,
+                'bobot' => $kriteria->bobot,
+                'keterangan' => $kriteria->nama
+            ]);
+        }
+        foreach ($kriteriaMultiple as $key => $value) {
+            if (preg_match('/^bobot+_[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/', $key)) {
+                $kriteriaId = str_replace('bobot_', '', $key);
+                $siswaDetail = SiswaDetail::create([
+                    'siswa_id' => $siswa->id,
+                    'kriteria_id' => $kriteriaId
+                ]);
+                $bobot = 0;
+                $countSubSiswaDetail = count($kriteriaMultiple[$key]);
+                foreach ($kriteriaMultiple['bobot_' . $kriteriaId] as $key => $value) {
+                    $kriteria = Kriteriadetail::find($value);
+                    SubSiswaDetail::create([
+                        'siswa_detail_id' => $siswaDetail->id,
+                        'kriteria_id' => $kriteriaId,
+                        'kriteria_detail_id' => $value,
+                        'bobot' => $kriteria->bobot,
+                        'keterangan' => $kriteriaMultiple['keterangan_' . $kriteriaId][$key]
+                    ]);
+                    $bobot += $kriteria->bobot;
+                }
+                $siswaDetail->bobot = $bobot / $countSubSiswaDetail;
+                $siswaDetail->save();
+            }
+        }
+        // dd($input);
         Flash::success('Siswa saved successfully.');
 
         return redirect(route('siswas.index'));
@@ -95,8 +145,8 @@ class SiswaController extends AppBaseController
 
             return redirect(route('siswas.index'));
         }
-
-        return view('siswas.edit')->with('siswa', $siswa);
+        $kriterias = Kriteria::all();
+        return view('siswas.edit', compact('kriterias'))->with('siswa', $siswa);
     }
 
     /**
@@ -118,9 +168,65 @@ class SiswaController extends AppBaseController
             return redirect(route('siswas.index'));
         }
 
-        $siswa->fill($request->all());
-        $siswa->save();
+        $input = $request->all();
+        $input['tanggal_lahir'] = Carbon::createFromFormat('d/m/Y', $input['tanggal_lahir'])->format('Y-m-d');
 
+        $kriteriaSingle = [];
+        $kriteriaMultiple = [];
+        foreach ($input as $key => $value) {
+            if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/', $key)) {
+                $kriteriaSingle[$key] = $value;
+            } else if (preg_match('/^[A-Za-z]+_[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/', $key)) {
+                $kriteriaMultiple[$key] = $value;
+            }
+        }
+
+        $siswa->fill($input);
+        $siswa->save();
+        $siswa->siswaDetail()->each(
+            function ($siswaDetail) {
+                if ($siswaDetail->kriteria_detail_id == null)
+                    $siswaDetail->subSiswaDetail()->each(function ($subSiswaDetail) {
+                        $subSiswaDetail->delete();
+                    });
+                $siswaDetail->delete();
+            }
+        );
+        foreach ($kriteriaSingle as $key => $value) {
+            $kriteria = Kriteriadetail::find($value);
+            SiswaDetail::create([
+                'siswa_id' => $siswa->id,
+                'kriteria_id' => $key,
+                'kriteria_detail_id' => $value,
+                'bobot' => $kriteria->bobot,
+                'keterangan' => $kriteria->nama
+            ]);
+        }
+        foreach ($kriteriaMultiple as $key => $value) {
+            if (preg_match('/^bobot+_[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/', $key)) {
+                $kriteriaId = str_replace('bobot_', '', $key);
+                $siswaDetail = SiswaDetail::create([
+                    'siswa_id' => $siswa->id,
+                    'kriteria_id' => $kriteriaId
+                ]);
+                $bobot = 0;
+                $countSubSiswaDetail = count($kriteriaMultiple[$key]);
+                foreach ($kriteriaMultiple['bobot_' . $kriteriaId] as $key => $value) {
+                    $kriteria = Kriteriadetail::find($value);
+                    SubSiswaDetail::create([
+                        'siswa_detail_id' => $siswaDetail->id,
+                        'kriteria_id' => $kriteriaId,
+                        'kriteria_detail_id' => $value,
+                        'bobot' => $kriteria->bobot,
+                        'keterangan' => $kriteriaMultiple['keterangan_' . $kriteriaId][$key]
+                    ]);
+                    $bobot += $kriteria->bobot;
+                }
+                $siswaDetail->bobot = $bobot / $countSubSiswaDetail;
+                $siswaDetail->save();
+            }
+        }
+        // dd($input);
         Flash::success('Siswa updated successfully.');
 
         return redirect(route('siswas.index'));

@@ -4,9 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePenilaiansTable extends Migration
+class CreateBantuansTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -14,12 +13,14 @@ class CreatePenilaiansTable extends Migration
      */
     public function up()
     {
-        Schema::create('penilaians', function (Blueprint $table) {
+        Schema::create('bantuans', function (Blueprint $table) {
             $table->uuid('id');
-            $table->uuid('siswa_id');
-            $table->uuid('kriteria_detail_id');
-            $table->float('bobot')->nullable();
-            $table->string('ket')->nullable();
+            $table->string('nama');
+            $table->integer('jumlah');
+            $table->integer('kuota');
+            $table->string('status')->default('proses');
+            $table->boolean('ganda')->default(true);
+            $table->string('keterangan')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -32,6 +33,6 @@ class CreatePenilaiansTable extends Migration
      */
     public function down()
     {
-        Schema::drop('penilaians');
+        Schema::dropIfExists('bantuans');
     }
 }

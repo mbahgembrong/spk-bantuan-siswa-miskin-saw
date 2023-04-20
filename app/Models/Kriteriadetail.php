@@ -24,8 +24,9 @@ class Kriteriadetail extends Model
 
     use HasFactory;
 
+    use \App\Traits\TraitUuid;
     public $table = 'kriteriadetails';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -37,7 +38,6 @@ class Kriteriadetail extends Model
         'bobot',
         'kode',
         'tipe',
-        'ket'
     ];
 
     /**
@@ -50,7 +50,6 @@ class Kriteriadetail extends Model
         'bobot' => 'float',
         'kode' => 'string',
         'tipe' => 'string',
-        'ket' => 'string'
     ];
 
     /**
@@ -61,11 +60,18 @@ class Kriteriadetail extends Model
     public static $rules = [
         'kriteria_id' => 'required|exists:kriterias,id',
         'nama' => 'required',
-        'bobot' => 'required|numeric|between:0.99,99',
-        'kode' => 'required',
-        'tipe' => 'required',
-        'ket' => 'required'
+        'bobot' => 'required|numeric|between:0,100',
+        'kode' => 'nullable',
+        'tipe' => 'nullable',
     ];
 
-    
+    /**
+     * Get the kriteria that owns the Kriteriadetail
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function kriteria()
+    {
+        return $this->belongsTo(Kriteria::class, 'kriteria_id');
+    }
 }
