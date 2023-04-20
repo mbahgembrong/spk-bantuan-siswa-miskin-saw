@@ -1,0 +1,10 @@
+version: 3
+services:
+  laravel.test:
+    build: './docker/7.4/Dockerfile'
+    ports:
+      - $(WWWPORT):-80=80
+    environment:
+      - WWWGROUP=$(WWWGROUP):-$(id -g)
+      - WWWUSER=$(WWWUSER):-$(id -u)
+        
