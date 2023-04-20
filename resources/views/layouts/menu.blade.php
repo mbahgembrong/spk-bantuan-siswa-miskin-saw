@@ -51,21 +51,11 @@
 
 
 <li class="nav-item">
-    <a href="{{ route('penilaians.index') }}" class="nav-link {{ Request::is('penilaians*') ? 'active' : '' }}">
+    <a href="{{ route('bantuans.index') }}" class="nav-link {{ Request::is('bantuans*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-copy"></i>
-        <p>Penilaian</p>
+        <p>Bantuan</p>
     </a>
 </li>
-
-
-<li class="nav-item">
-    <a href="{{ route('penilaianDetails.index') }}"
-        class="nav-link {{ Request::is('penilaianDetails*') ? 'active' : '' }}">
-        <i class="nav-icon fas fa-copy"></i>
-        <p>Penilaian Detail</p>
-    </a>
-</li>
-
 
 @push('third_party_scripts')
     <script>

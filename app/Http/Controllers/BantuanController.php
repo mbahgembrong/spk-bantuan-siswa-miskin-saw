@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Bantuan;
 use App\Http\Requests\CreateBantuanRequest;
 use App\Http\Requests\UpdateBantuanRequest;
+use App\Models\Kriteria;
+use App\Models\Siswa;
+use App\Models\SiswaBantuan;
+use Illuminate\Support\Facades\Request;
+use Laracasts\Flash\Flash;
 
 class BantuanController extends Controller
 {
@@ -53,6 +58,92 @@ class BantuanController extends Controller
         return redirect(route('bantuans.index'));
     }
 
+
+    public function proses(Request $request, $id)
+    {
+        $bantuan = Bantuan::find($id);
+
+        if (empty($bantuan)) {
+            Flash::error('Bantuan not found');
+
+            return redirect(route('bantuans.index'));
+        }
+        try {
+            $vectorBobot = Kriteria::all();
+            $nilaiFuzzy = [];
+            $nilaiRumusKriteria = ['benefit' => [], 'cost' => []];
+            if ($bantuan->ganda) {
+                $siswas = Siswa::all();
+            }
+            // nilai fuzzy
+            foreach ($siswas as $siswa) {
+                $nilaiFuzzy[$siswa->id] = ['siswa_nama' => $siswa->nama, 'fuzzy' => $siswa->getNilaiFuzzy(), 'bobot' => ['benefit' => [], 'cost' => []], 'total_nilai' => 0];
+            }
+
+            // nilaiRumusKriteria
+            foreach ($vectorBobot as $vector) {
+                $tempArrayPenilaian = [];
+                foreach ($nilaiFuzzy as $siswaId => $siswa) {
+                    foreach ($siswa['fuzzy'] as $key => $value) {
+                        if ($key == $vector->id) {
+                            if ($vector->jenis == 'benefit')
+                                array_push($nilaiFuzzy[$siswaId]['bobot']['benefit'], ['vector_id' => $key, 'bobot' => ($value / 100), 'penilaian' => 0, 'jenis_penilaian' => '', 'nilai_normalisasi' => 0, 'nilai_akhir' => 0, 'bobot_kriteria' => $vector->bobot / 100]);
+                            if ($vector->jenis == 'cost')
+                                array_push($nilaiFuzzy[$siswaId]['bobot']['cost'], ['vector_id' => $key, 'bobot' => ($value / 100), 'penilaian' => 0, 'jenis_penilaian' => '', 'nilai_normalisasi' => 0, 'nilai_akhir' => 0, 'bobot_kriteria' => $vector->bobot / 100]);
+                            array_push($tempArrayPenilaian, ($value / 100));
+                        }
+                    }
+                }
+                $penilaian = 0;
+                if ($vector->jenis == 'benefit') {
+                    $penilaian = max($tempArrayPenilaian);
+                    $nilaiRumusKriteria['benefit'][$vector->id] = ['vector_nama' => $vector->nama, 'penilaian' => $penilaian, 'jenis_penilaian' => 'max', 'bobot' => $vector->bobot];
+                }
+                if ($vector->jenis == 'cost') {
+                    $penilaian = min($tempArrayPenilaian);
+                    $nilaiRumusKriteria['cost'][$vector->id] = ['vector_nama' => $vector->nama, 'penilaian' => $penilaian, 'jenis_penilaian' => 'min', 'bobot' => $vector->bobot];
+                }
+            }
+            foreach ($nilaiFuzzy as $siswaId => $siswa) {
+                $tempNilaiAkhir = [];
+                foreach ($siswa['bobot'] as $jenisVector => $item) {
+                    foreach ($item as $indexDetailSiswa => $detailSiswa) {
+                        foreach ($nilaiRumusKriteria as $kriteria) {
+                            foreach ($kriteria as $kriteriaId => $kriteria) {
+                                if ($detailSiswa['vector_id'] == $kriteriaId) {
+                                    if ($jenisVector == 'benefit') {
+                                        // nilai normalisassi
+                                        $nilaiFuzzy[$siswaId]['bobot']['benefit'][$indexDetailSiswa]['jenis_penilaian'] = $kriteria['jenis_penilaian'];
+                                        $nilaiFuzzy[$siswaId]['bobot']['benefit'][$indexDetailSiswa]['penilaian'] = $kriteria['penilaian'];
+                                        $nilaiFuzzy[$siswaId]['bobot']['benefit'][$indexDetailSiswa]['nilai_normalisasi'] = $detailSiswa['bobot'] / $kriteria['penilaian'];
+                                        // nilai akhir
+                                        $nilaiFuzzy[$siswaId]['bobot']['benefit'][$indexDetailSiswa]['nilai_akhir'] = $nilaiFuzzy[$siswaId]
+                                        ['bobot']['benefit'][$indexDetailSiswa]['bobot_kriteria'] * $nilaiFuzzy[$siswaId]['bobot']['benefit'][$indexDetailSiswa]['nilai_normalisasi'];
+                                        array_push($tempNilaiAkhir, $nilaiFuzzy[$siswaId]['bobot']['benefit'][$indexDetailSiswa]['nilai_akhir']);
+                                    }
+                                    if ($jenisVector == 'cost') {
+                                        // nilai normalisasi
+                                        $nilaiFuzzy[$siswaId]['bobot']['cost'][$indexDetailSiswa]['jenis_penilaian'] = $kriteria['jenis_penilaian'];
+                                        $nilaiFuzzy[$siswaId]['bobot']['cost'][$indexDetailSiswa]['penilaian'] = $kriteria['penilaian'];
+                                        $nilaiFuzzy[$siswaId]['bobot']['cost'][$indexDetailSiswa]['nilai_normalisasi'] = $kriteria['penilaian'] / $detailSiswa['bobot'];
+                                        // nilai akhir
+                                        $nilaiFuzzy[$siswaId]['bobot']['cost'][$indexDetailSiswa]['nilai_akhir'] = $nilaiFuzzy[$siswaId]['bobot']['cost'][$indexDetailSiswa]['bobot_kriteria'] * $nilaiFuzzy[$siswaId]['bobot']['cost'][$indexDetailSiswa]['nilai_normalisasi'];
+                                        array_push($tempNilaiAkhir, $nilaiFuzzy[$siswaId]['bobot']['cost'][$indexDetailSiswa]['nilai_akhir']);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+                $nilaiFuzzy[$siswaId]['total_nilai'] = array_sum($tempNilaiAkhir);
+            }
+            return view('bantuans.proses', compact(['vectorBobot', 'nilaiFuzzy', 'nilaiRumusKriteria', 'bantuan']));
+        } catch (\Throwable $th) {
+            dd($th);
+        }
+
+    }
     /**
      * Display the specified Bantuan.
      *
@@ -73,6 +164,7 @@ class BantuanController extends Controller
 
         return view('bantuans.show')->with('bantuan', $bantuan);
     }
+
 
     /**
      * Show the form for editing the specified Bantuan.

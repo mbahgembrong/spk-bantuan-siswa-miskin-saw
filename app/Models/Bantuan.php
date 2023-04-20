@@ -25,7 +25,6 @@ class Bantuan extends Model
         'jumlah',
         'kuota',
         'status',
-        'proses',
         'ganda',
         'keterangan',
 
@@ -55,7 +54,7 @@ class Bantuan extends Model
         'jumlah' => 'required|numeric',
         'kuota' => 'required|numeric',
         'status' => 'required|in:proses,selesai',
-        'ganda' => 'required|in:true,false',
+        'ganda' => 'required|in:1,2',
         'keterangan' => 'nullable',
     ];
 }

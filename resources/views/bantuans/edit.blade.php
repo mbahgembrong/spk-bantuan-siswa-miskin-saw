@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    <h1>Edit Penilaian</h1>
+                    <h1>Edit Bantuan</h1>
                 </div>
             </div>
         </div>
@@ -17,17 +17,17 @@
 
         <div class="card">
 
-            {!! Form::model($penilaian, ['route' => ['penilaians.update', $penilaian->id], 'method' => 'patch']) !!}
+            {!! Form::model($bantuan, ['route' => ['bantuans.update', $bantuan->id], 'method' => 'patch']) !!}
 
             <div class="card-body">
                 <div class="row">
-                    @include('penilaians.fields')
+                    @include('bantuans.fields')
                 </div>
             </div>
 
             <div class="card-footer">
                 {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-                <a href="{{ route('penilaians.index') }}" class="btn btn-default">Cancel</a>
+                <a href="{{ route('bantuans.index') }}" class="btn btn-default">Cancel</a>
             </div>
 
             {!! Form::close() !!}

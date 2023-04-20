@@ -41,13 +41,10 @@ Route::prefix('kriteriadetails')->group(function () {
     Route::delete('/{kriteriaId}/{id}', [App\Http\Controllers\KriteriadetailController::class, 'destroy'])->name('kriteriadetails.destroy');
 });
 
-// Route::resource('kriteriadetails', App\Http\Controllers\KriteriadetailController::class);
-
-
 Route::resource('siswas', App\Http\Controllers\SiswaController::class);
 
+Route::prefix('bantuans')->group(function () {
+    Route::get('/proses/{id}', [App\Http\Controllers\BantuanController::class, 'proses'])->name(('bantuans.proses'));
 
-Route::resource('penilaians', App\Http\Controllers\PenilaianController::class);
-
-
-Route::resource('penilaianDetails', App\Http\Controllers\PenilaianDetailController::class);
+});
+Route::resource('bantuans', App\Http\Controllers\BantuanController::class);

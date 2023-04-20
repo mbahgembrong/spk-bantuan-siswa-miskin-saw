@@ -5,11 +5,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Penilaians</h1>
+                    <h1>Bantuans</h1>
                 </div>
                 <div class="col-sm-6">
                     <a class="btn btn-primary float-right"
-                       href="{{ route('penilaians.create') }}">
+                       href="{{ route('bantuans.create') }}">
                         Add New
                     </a>
                 </div>
@@ -25,11 +25,11 @@
 
         <div class="card">
             <div class="card-body p-0">
-                @include('penilaians.table')
+                @include('bantuans.table')
 
                 <div class="card-footer clearfix">
                     <div class="float-right">
-                        
+
                     </div>
                 </div>
             </div>
