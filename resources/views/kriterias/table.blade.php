@@ -17,7 +17,7 @@
                     <td>{{ $kriteria->nama }}</td>
                     <td>{{ $kriteria->kode }}</td>
                     <td>{{ $kriteria->bobot }}</td>
-                    <td>{{ $kriteria->bobot / 100 }} %</td>
+                    <td>{{ $kriteria->bobot / 100 }}</td>
                     <td>
                         <p class="badge  {{ $kriteria->jenis == 'benefit' ? 'badge-success' : 'badge-secondary' }}">
                             {{ $kriteria->jenis }}</p>

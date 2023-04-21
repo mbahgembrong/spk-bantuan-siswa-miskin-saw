@@ -18,7 +18,7 @@
                     <td>{{ $kriteriadetail->nama }}</td>
                     <td>{{ $kriteriadetail->kode }}</td>
                     <td>{{ $kriteriadetail->bobot }}</td>
-                    <td>{{ $kriteriadetail->bobot / 100 }} %</td>
+                    <td>{{ $kriteriadetail->bobot / 100 }}</td>
                     <td>{{ $kriteriadetail->tipe }}</td>
                     <td width="120">
                         {!! Form::open([
