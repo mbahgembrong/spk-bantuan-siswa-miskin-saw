@@ -97,7 +97,6 @@ class BantuanController extends Controller
                 $penilaian = 0;
                 
                 if ($vector->jenis == 'benefit') {
-                    // dd($tempArrayPenilaian);
                     try {
                         $penilaian = max($tempArrayPenilaian);
                     } catch (\Throwable $th) {
