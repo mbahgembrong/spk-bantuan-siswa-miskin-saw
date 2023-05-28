@@ -91,12 +91,21 @@ class BantuanController extends Controller
                     }
                 }
                 $penilaian = 0;
+                
                 if ($vector->jenis == 'benefit') {
-                    $penilaian = max($tempArrayPenilaian);
+                    try {
+                        $penilaian = max($tempArrayPenilaian);
+                    } catch (\Throwable $th) {
+                        $penilaian=0;
+                    }
                     $nilaiRumusKriteria['benefit'][$vector->id] = ['vector_nama' => $vector->nama, 'penilaian' => $penilaian, 'jenis_penilaian' => 'max', 'bobot' => $vector->bobot];
                 }
                 if ($vector->jenis == 'cost') {
-                    $penilaian = min($tempArrayPenilaian);
+                    try {
+                        $penilaian = min($tempArrayPenilaian) ;
+                    } catch (\Throwable $th) {
+                        $penilaian=0;
+                    }
                     $nilaiRumusKriteria['cost'][$vector->id] = ['vector_nama' => $vector->nama, 'penilaian' => $penilaian, 'jenis_penilaian' => 'min', 'bobot' => $vector->bobot];
                 }
             }
