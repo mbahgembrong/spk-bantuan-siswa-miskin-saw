@@ -53,8 +53,7 @@ class Bantuan extends Model
         'nama' => 'required',
         'jumlah' => 'required|numeric',
         'kuota' => 'required|numeric',
-        'status' => 'required|in:proses,selesai',
-        'ganda' => 'required|in:1,2',
+        'ganda' => 'required|in:1,0',
         'keterangan' => 'nullable',
     ];
 }

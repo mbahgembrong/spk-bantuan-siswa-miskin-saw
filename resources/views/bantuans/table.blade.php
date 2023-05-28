@@ -27,15 +27,19 @@
                     <td width="120">
                         {!! Form::open(['route' => ['bantuans.destroy', $bantuan->id], 'method' => 'delete']) !!}
                         <div class='btn-group'>
-                            <a href="{{ route('bantuans.proses', [$bantuan->id]) }}" class='btn btn-success btn-xs'>
-                                <i class=" fas fa-angle-double-right"></i>
-                            </a>
-                            <a href="{{ route('bantuans.show', [$bantuan->id]) }}" class='btn btn-default btn-xs'>
-                                <i class="far fa-eye"></i>
-                            </a>
-                            <a href="{{ route('bantuans.edit', [$bantuan->id]) }}" class='btn btn-default btn-xs'>
-                                <i class="far fa-edit"></i>
-                            </a>
+                            @if ($bantuan->status != 'selesai')
+                                <a href="{{ route('bantuans.proses', [$bantuan->id]) }}" class='btn btn-success btn-xs'>
+                                    <i class=" fas fa-angle-double-right"></i>
+                                </a>
+                                <a href="{{ route('bantuans.edit', [$bantuan->id]) }}" class='btn btn-default btn-xs'>
+                                    <i class="far fa-edit"></i>
+                                </a>
+                            @else
+                                <a href="{{ route('bantuans.proses', [$bantuan->id]) }}" class='btn btn-success btn-xs'>
+                                    <i class="fas fa-file-pdf"></i>
+                                </a>
+                            @endif
+
                             {!! Form::button('<i class="far fa-trash-alt"></i>', [
                                 'type' => 'submit',
                                 'class' => 'btn btn-danger btn-xs btn-delete',

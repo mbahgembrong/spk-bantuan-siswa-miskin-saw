@@ -12,14 +12,7 @@
     {!! Form::label('kuota', 'Kuota :') !!}
     {!! Form::number('kuota', null, ['class' => 'form-control']) !!}
 </div>
-
-<div class="form-group col-sm-6">
-    {!! Form::label('status', 'Status :') !!}
-    {!! Form::select('status', ['proses' => 'proses', 'selesai' => 'selesai'], null, [
-        'class' => 'form-control custom-select',
-    ]) !!}
-</div>
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-12">
     {!! Form::label('ganda', 'Ganda :') !!}
     {!! Form::select('ganda', [true => 'Ya', false => 'Tidak'], null, [
         'class' => 'form-control custom-select',

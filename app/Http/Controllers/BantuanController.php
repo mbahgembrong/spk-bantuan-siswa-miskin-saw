@@ -58,26 +58,22 @@ class BantuanController extends Controller
         return redirect(route('bantuans.index'));
     }
 
-
-    public function proses(Request $request, $id)
+    private function prosesSAW($bantuan)
     {
-        $bantuan = Bantuan::find($id);
-
-        if (empty($bantuan)) {
-            Flash::error('Bantuan not found');
-
-            return redirect(route('bantuans.index'));
-        }
         try {
             $vectorBobot = Kriteria::all();
             $nilaiFuzzy = [];
             $nilaiRumusKriteria = ['benefit' => [], 'cost' => []];
             if ($bantuan->ganda) {
                 $siswas = Siswa::all();
+            } else {
+                $siswas = Siswa::whereNotIn('id', function ($q) {
+                    $q->select('siswa_id')->from('siswa_bantuans');
+                })->get();
             }
             // nilai fuzzy
             foreach ($siswas as $siswa) {
-                $nilaiFuzzy[$siswa->id] = ['siswa_nama' => $siswa->nama, 'fuzzy' => $siswa->getNilaiFuzzy(), 'bobot' => ['benefit' => [], 'cost' => []], 'total_nilai' => 0];
+                $nilaiFuzzy[$siswa->id] = ['siswa_id' => $siswa->id, 'siswa_nama' => $siswa->nama, 'fuzzy' => $siswa->getNilaiFuzzy(), 'bobot' => ['benefit' => [], 'cost' => []], 'total_nilai' => 0];
             }
 
             // nilaiRumusKriteria
@@ -138,11 +134,64 @@ class BantuanController extends Controller
                 }
                 $nilaiFuzzy[$siswaId]['total_nilai'] = array_sum($tempNilaiAkhir);
             }
-            return view('bantuans.proses', compact(['vectorBobot', 'nilaiFuzzy', 'nilaiRumusKriteria', 'bantuan']));
+            return compact(['vectorBobot', 'nilaiFuzzy', 'nilaiRumusKriteria', 'bantuan']);
         } catch (\Throwable $th) {
             dd($th);
         }
+    }
+    public function proses(Request $request, $id)
+    {
+        $bantuan = Bantuan::find($id);
 
+        if (empty($bantuan)) {
+            Flash::error('Bantuan not found');
+
+            return redirect(route('bantuans.index'));
+        }
+        $prosesSaw = $this->prosesSAW($bantuan);
+        $vectorBobot = $prosesSaw['vectorBobot'];
+        $nilaiFuzzy = $prosesSaw['nilaiFuzzy'];
+        $nilaiRumusKriteria = $prosesSaw['nilaiRumusKriteria'];
+
+        return view('bantuans.proses', compact(['vectorBobot', 'nilaiFuzzy', 'nilaiRumusKriteria', 'bantuan']));
+    }
+    public function prosesSelesai(Request $request, $id)
+    {
+        $bantuan = Bantuan::find($id);
+
+        if (empty($bantuan)) {
+            Flash::error('Bantuan not found');
+
+            return redirect(route('bantuans.index'));
+        }
+        $bantuan->status = 'selesai';
+        $bantuan->save();
+        $prosesSaw = $this->prosesSAW($bantuan);
+        $vectorBobot = $prosesSaw['vectorBobot'];
+        $nilaiFuzzy = $prosesSaw['nilaiFuzzy'];
+        $nilaiRumusKriteria = $prosesSaw['nilaiRumusKriteria'];
+        usort($nilaiFuzzy, function ($a, $b) {
+            return $b['total_nilai'] <=> $a['total_nilai'];
+        });
+        foreach ($nilaiFuzzy as $key => $value) {
+            if ($key + 1 <= $bantuan->kuota) {
+                $nilaiFuzzy[$key]['menerima_bantuan'] = true;
+            } else {
+                $nilaiFuzzy[$key]['menerima_bantuan'] = false;
+            }
+        }
+        foreach ($nilaiFuzzy as $value) {
+            if ($value['menerima_bantuan']) {
+                $bantuanSiswa = new SiswaBantuan();
+                $bantuanSiswa->bantuan_id = $bantuan->id;
+                $bantuanSiswa->siswa_id = $value['siswa_id'];
+                $bantuanSiswa->bantuan = $value['menerima_bantuan'];
+                $bantuanSiswa->bobot = $value['total_nilai'];
+                $bantuanSiswa->save();
+            } else
+                break;
+        }
+        return redirect()->route('bantuans.index');
     }
     /**
      * Display the specified Bantuan.

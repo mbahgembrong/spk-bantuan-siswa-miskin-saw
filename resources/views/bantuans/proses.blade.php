@@ -11,6 +11,9 @@
                     <a class="btn btn-default float-right" href="{{ route('bantuans.index') }}">
                         Back
                     </a>
+                    <a class="btn btn-warning float-right mr-2" href="{{ route('bantuans.proses_selesai', $bantuan->id) }}">
+                        Proses Selesai
+                    </a>
                 </div>
             </div>
         </div>
@@ -105,9 +108,9 @@
                                             <td class="text-no-wrap">{{ $siswa['siswa_nama'] }}</td>
                                             @foreach ($siswa['bobot'] as $bobot)
                                                 @foreach ($bobot as $nilai)
-                                                    <td>{{ $nilai['bobot'] }}</td>
+                                                    <td>{{ $nilai['bobot'] * 100 }}</td>
                                                     <td><span class="badge badge-primary w-100 h-100">
-                                                            {{ $nilai['bobot'] / 100 }}</span>
+                                                            {{ $nilai['bobot'] }}</span>
                                                     </td>
                                                 @endforeach
                                             @endforeach
