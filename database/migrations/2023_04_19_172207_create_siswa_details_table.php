@@ -23,6 +23,9 @@ class CreateSiswaDetailsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+        Schema::table('siswa_details', function (Blueprint $table) {
+            $table->foreign('siswa_id')->references('id')->on('siswas')->onDelete('cascade');
+        });
     }
 
     /**

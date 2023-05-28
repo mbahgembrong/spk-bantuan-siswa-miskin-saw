@@ -24,6 +24,9 @@ class CreateKriteriadetailsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+        Schema::table('kriteriadetails', function (Blueprint $table) {
+            $table->foreign('kriteria_id')->references('id')->on('kriterias')->onDelete('cascade');
+        });
     }
 
     /**

@@ -17,10 +17,15 @@ class CreateSiswaBantuansTable extends Migration
             $table->uuid('id');
             $table->uuid('bantuan_id');
             $table->uuid('siswa_id');
+            $table->boolean('bantuan')->default(false);
             $table->float('bobot');
             $table->string('keterangan')->nullable();
             $table->timestamps();
             $table->softDeletes();
+        });
+        Schema::table('siswa_bantuans', function (Blueprint $table) {
+            $table->foreign('bantuan_id')->references('id')->on('bantuans')->onDelete('cascade');
+            $table->foreign('siswa_id')->references('id')->on('siswas')->onDelete('cascade');
         });
     }
 

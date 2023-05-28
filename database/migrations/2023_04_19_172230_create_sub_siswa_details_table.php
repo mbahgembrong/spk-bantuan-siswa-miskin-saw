@@ -23,6 +23,11 @@ class CreateSubSiswaDetailsTable extends Migration
                 $table->timestamps();
                 $table->softDeletes();
         });
+        Schema::table('sub_siswa_details', function (Blueprint $table) {
+            $table->foreign('siswa_detail_id')->references('id')->on('siswa_details')->onDelete('cascade');
+            $table->foreign('kriteria_id')->references('id')->on('kriterias')->onDelete('cascade');
+            $table->foreign('kriteria_detail_id')->references('id')->on('kriteriadetails')->onDelete('cascade');
+        });
     }
 
     /**
