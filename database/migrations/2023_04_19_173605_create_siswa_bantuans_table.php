@@ -14,7 +14,7 @@ class CreateSiswaBantuansTable extends Migration
     public function up()
     {
         Schema::create('siswa_bantuans', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->uuid('bantuan_id');
             $table->uuid('siswa_id');
             $table->boolean('bantuan')->default(false);

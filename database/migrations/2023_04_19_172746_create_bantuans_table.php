@@ -14,7 +14,7 @@ class CreateBantuansTable extends Migration
     public function up()
     {
         Schema::create('bantuans', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->string('nama');
             $table->integer('jumlah');
             $table->integer('kuota');

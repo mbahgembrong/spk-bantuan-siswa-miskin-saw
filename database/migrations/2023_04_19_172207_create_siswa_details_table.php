@@ -14,7 +14,7 @@ class CreateSiswaDetailsTable extends Migration
     public function up()
     {
         Schema::create('siswa_details', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->uuid('siswa_id');
             $table->uuid('kriteria_id');
             $table->uuid('kriteria_detail_id')->nullable();
