@@ -14,7 +14,7 @@ class CreateSubSiswaDetailsTable extends Migration
     public function up()
     {
         Schema::create('sub_siswa_details', function (Blueprint $table) {
-                $table->uuid('id');
+                $table->uuid('id')->primary();
                 $table->uuid('siswa_detail_id');
                 $table->uuid('kriteria_id')->nullable();
                 $table->uuid('kriteria_detail_id');
