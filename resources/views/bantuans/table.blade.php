@@ -34,16 +34,17 @@
                                 <a href="{{ route('bantuans.edit', [$bantuan->id]) }}" class='btn btn-default btn-xs'>
                                     <i class="far fa-edit"></i>
                                 </a>
+                                  {!! Form::button('<i class="far fa-trash-alt"></i>', [
+                                'type' => 'submit',
+                                'class' => 'btn btn-danger btn-xs btn-delete',
+                            ]) !!}
                             @else
-                                <a href="{{ route('bantuans.proses', [$bantuan->id]) }}" class='btn btn-success btn-xs'>
+                                <a href="{{ route('bantuans.pdf', [$bantuan->id]) }}" class='btn btn-success btn-xs' target="_blank">
                                     <i class="fas fa-file-pdf"></i>
                                 </a>
                             @endif
 
-                            {!! Form::button('<i class="far fa-trash-alt"></i>', [
-                                'type' => 'submit',
-                                'class' => 'btn btn-danger btn-xs btn-delete',
-                            ]) !!}
+
                         </div>
                         {!! Form::close() !!}
                     </td>

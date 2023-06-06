@@ -46,6 +46,7 @@ Route::resource('siswas', App\Http\Controllers\SiswaController::class);
 Route::prefix('bantuans')->group(function () {
     Route::get('/proses/{id}', [App\Http\Controllers\BantuanController::class, 'proses'])->name(('bantuans.proses'));
     Route::get('/proses_selesai/{id}', [App\Http\Controllers\BantuanController::class, 'prosesSelesai'])->name(('bantuans.proses_selesai'));
+    Route::get('/pdf/{id}', [App\Http\Controllers\BantuanController::class, 'pdf'])->name(('bantuans.pdf'));
 
 });
 Route::resource('bantuans', App\Http\Controllers\BantuanController::class);

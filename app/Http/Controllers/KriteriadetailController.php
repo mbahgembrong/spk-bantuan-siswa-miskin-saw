@@ -51,6 +51,14 @@ class KriteriadetailController extends AppBaseController
     public function store(CreateKriteriadetailRequest $request, $kriteriaId)
     {
         $input = $request->all();
+        if ($request->has('range_awal')) {
+            if ($request->range_akhir == "500.000") {
+                $input['nama'] = "X < Rp. 500.000,-";
+            } else if ($request->range_awal == "2.000.000")
+                $input['nama'] = "X > Rp. 2.000.000,-";
+            else
+                $input['nama'] = "Rp. " . $request->range_awal . ",- < X < Rp. " . $request->range_akhir . ",-";
+        }
 
         /** @var Kriteriadetail $kriteriadetail */
         $kriteriadetail = Kriteriadetail::create($input);
@@ -94,6 +102,15 @@ class KriteriadetailController extends AppBaseController
         $kriteria = Kriteria::find($kriteriaId);
         /** @var Kriteriadetail $kriteriadetail */
         $kriteriadetail = Kriteriadetail::find($id);
+        $range = [];
+        if ($kriteria->kode == 'penghasilan') {
+            $explode = explode('X', $kriteriadetail->nama);
+            $rangeAwal = rtrim(substr($explode[0], 4), ',- <') ?: rtrim(substr($explode[1], 7), ',-');
+            $rangeAkhir = rtrim(substr($explode[1], 7), ',-') ?: rtrim(substr($explode[0], 7), ',-');
+            $range['rangeAwal'] = $rangeAwal;
+            $range['rangeAkhir'] = $rangeAkhir;
+
+        }
 
         if (empty($kriteriadetail)) {
             Flash::error('Kriteriadetail not found');
@@ -101,7 +118,7 @@ class KriteriadetailController extends AppBaseController
             return redirect(route('kriteriadetails.index', $kriteriaId));
         }
 
-        return view('kriteriadetails.edit', compact('kriteria'))->with('kriteriadetail', $kriteriadetail);
+        return view('kriteriadetails.edit', compact(['kriteria', 'range']))->with('kriteriadetail', $kriteriadetail);
     }
 
     /**
@@ -122,8 +139,18 @@ class KriteriadetailController extends AppBaseController
 
             return redirect(route('kriteriadetails.index', $kriteriaId));
         }
+        $input = $request->all();
+        if ($request->nama == 'penghasilan') {
+            if ($request->range_akhir == "500.000") {
+                $input['nama'] = "X < Rp. 500.000,-";
+            } else if ($request->range_awal == "2.000.000")
+                $input['nama'] = "X > Rp. 2.000.000,-";
+            else
+                $input['nama'] = "Rp. " . $request->range_awal . ",- < X < Rp. " . $request->range_akhir . ",-";
 
-        $kriteriadetail->fill($request->all());
+        }
+
+        $kriteriadetail->fill($input);
         $kriteriadetail->save();
 
         Flash::success('Kriteriadetail updated successfully.');

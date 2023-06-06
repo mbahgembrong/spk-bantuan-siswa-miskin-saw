@@ -91,20 +91,20 @@ class BantuanController extends Controller
                     }
                 }
                 $penilaian = 0;
-                
+
                 if ($vector->jenis == 'benefit') {
                     try {
                         $penilaian = max($tempArrayPenilaian);
                     } catch (\Throwable $th) {
-                        $penilaian=0;
+                        $penilaian = 0;
                     }
                     $nilaiRumusKriteria['benefit'][$vector->id] = ['vector_nama' => $vector->nama, 'penilaian' => $penilaian, 'jenis_penilaian' => 'max', 'bobot' => $vector->bobot];
                 }
                 if ($vector->jenis == 'cost') {
                     try {
-                        $penilaian = min($tempArrayPenilaian) ;
+                        $penilaian = min($tempArrayPenilaian);
                     } catch (\Throwable $th) {
-                        $penilaian=0;
+                        $penilaian = 0;
                     }
                     $nilaiRumusKriteria['cost'][$vector->id] = ['vector_nama' => $vector->nama, 'penilaian' => $penilaian, 'jenis_penilaian' => 'min', 'bobot' => $vector->bobot];
                 }
@@ -201,6 +201,11 @@ class BantuanController extends Controller
                 break;
         }
         return redirect()->route('bantuans.index');
+    }
+
+    public function pdf(Request $request, $id)
+    {
+
     }
     /**
      * Display the specified Bantuan.
