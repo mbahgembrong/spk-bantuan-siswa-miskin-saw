@@ -120,7 +120,7 @@ class BantuanController extends Controller
                                         // nilai normalisassi
                                         $nilaiFuzzy[$siswaId]['bobot']['benefit'][$indexDetailSiswa]['jenis_penilaian'] = $kriteria['jenis_penilaian'];
                                         $nilaiFuzzy[$siswaId]['bobot']['benefit'][$indexDetailSiswa]['penilaian'] = $kriteria['penilaian'];
-                                        $nilaiFuzzy[$siswaId]['bobot']['benefit'][$indexDetailSiswa]['nilai_normalisasi'] = $detailSiswa['bobot'] / $kriteria['penilaian'];
+                                        $nilaiFuzzy[$siswaId]['bobot']['benefit'][$indexDetailSiswa]['nilai_normalisasi'] = $detailSiswa['bobot'] != 0 ? ($detailSiswa['bobot'] / $kriteria['penilaian']) : 0;
                                         // nilai akhir
                                         $nilaiFuzzy[$siswaId]['bobot']['benefit'][$indexDetailSiswa]['nilai_akhir'] = $nilaiFuzzy[$siswaId]
                                         ['bobot']['benefit'][$indexDetailSiswa]['bobot_kriteria'] * $nilaiFuzzy[$siswaId]['bobot']['benefit'][$indexDetailSiswa]['nilai_normalisasi'];
@@ -130,7 +130,7 @@ class BantuanController extends Controller
                                         // nilai normalisasi
                                         $nilaiFuzzy[$siswaId]['bobot']['cost'][$indexDetailSiswa]['jenis_penilaian'] = $kriteria['jenis_penilaian'];
                                         $nilaiFuzzy[$siswaId]['bobot']['cost'][$indexDetailSiswa]['penilaian'] = $kriteria['penilaian'];
-                                        $nilaiFuzzy[$siswaId]['bobot']['cost'][$indexDetailSiswa]['nilai_normalisasi'] = $kriteria['penilaian'] / $detailSiswa['bobot'];
+                                        $nilaiFuzzy[$siswaId]['bobot']['cost'][$indexDetailSiswa]['nilai_normalisasi'] = ($kriteria['penilaian'] / $detailSiswa['bobot']);
                                         // nilai akhir
                                         $nilaiFuzzy[$siswaId]['bobot']['cost'][$indexDetailSiswa]['nilai_akhir'] = $nilaiFuzzy[$siswaId]['bobot']['cost'][$indexDetailSiswa]['bobot_kriteria'] * $nilaiFuzzy[$siswaId]['bobot']['cost'][$indexDetailSiswa]['nilai_normalisasi'];
                                         array_push($tempNilaiAkhir, $nilaiFuzzy[$siswaId]['bobot']['cost'][$indexDetailSiswa]['nilai_akhir']);

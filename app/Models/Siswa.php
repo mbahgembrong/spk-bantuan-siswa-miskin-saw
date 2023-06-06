@@ -89,10 +89,12 @@ class Siswa extends Model
     }
     public function getNilaiFuzzy()
     {
-        $siswas = SiswaDetail::where('siswa_id', $this->id)->get();
         $nilaiFuzzy = [];
-        foreach ($siswas as $siswa) {
-            $nilaiFuzzy[$siswa->kriteria_id] = $siswa->bobot;
+        $kriterias = Kriteria::all();
+        foreach ($kriterias as $kriteria) {
+            $siswa = SiswaDetail::where('siswa_id', $this->id)->where('kriteria_id', $kriteria->id)->first();
+
+            $nilaiFuzzy[$kriteria->id] = $siswa->bobot ?? 0;
         }
         return $nilaiFuzzy;
     }
