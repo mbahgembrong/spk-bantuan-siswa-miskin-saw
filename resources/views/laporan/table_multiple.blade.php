@@ -46,27 +46,37 @@
                 "info": false,
                 "ordering": false,
                 dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', {
-                        title: 'Laporan ',
-                        extend: 'print',
-                        text: 'Print',
-                        autoPrint: true,
-                        customize: function(win) {
-                            $(win.document.body).find('table').addClass('display').css('font-size',
-                                '9px');
+                buttons: [{
+                    title: 'Laporan ',
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current',
 
-                            $(win.document.body).find('h1').css('text-align', 'center');
                         },
-                        exportOptions: {
-                            modifier: {
-                                page: 'current',
-
-                            },
-                            columns: [1, 2, 3],
-                        }
+                        columns: [1, 2, 3],
                     }
-                ],
+                }, {
+                    title: 'Laporan ',
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current',
+
+                        },
+                        columns: [1, 2, 3],
+                    }
+                }, {
+                    title: 'Laporan ',
+                    extend: 'print',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current',
+
+                        },
+                        columns: [1, 2, 3],
+                    }
+                }],
                 'headerCallback': function(thead, data, start, end, display) {
                     const header = $(thead);
                     header.find('th').eq(0).attr('rowspan', 2);
