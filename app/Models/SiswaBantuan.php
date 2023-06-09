@@ -37,4 +37,14 @@ class SiswaBantuan extends Model
         'bobot' => 'float',
         'keterangan' => 'string',
     ];
+
+    /**
+     * Get the siswa that owns the SiswaBantuan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function siswa()
+    {
+        return $this->belongsTo(Siswa::class, 'siswa_id');
+    }
 }

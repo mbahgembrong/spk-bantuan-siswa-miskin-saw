@@ -56,4 +56,14 @@ class Bantuan extends Model
         'ganda' => 'required|in:1,0',
         'keterangan' => 'nullable',
     ];
+
+    /**
+     * Get all of the sisswaBantuan for the Bantuan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function siswaBantuan()
+    {
+        return $this->hasMany(SiswaBantuan::class, 'bantuan_id');
+    }
 }

@@ -33,3 +33,6 @@
         </tbody>
     </table>
 </div>
+@push('third_party_scripts')
+    @include('layouts.datatables_js')
+@endpush

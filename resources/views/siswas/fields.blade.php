@@ -55,7 +55,10 @@
                 'class' => 'form-control',
             ]) !!}
         </div>
-    @else
+    @endif
+@endforeach
+@foreach ($kriterias as $kriteria)
+    @if ($kriteria->tipe == 'multiple')
         <div class="form-group_{{ $kriteria->id }} col-sm-12" id="{{ $kriteria->id }}">
             <label for="jenis_kelaminModal" class="form-label">{{ $kriteria->nama . ' :' }}</label>
             <div class="form-group fieldGroup_{{ $kriteria->id }}" data-id="1">

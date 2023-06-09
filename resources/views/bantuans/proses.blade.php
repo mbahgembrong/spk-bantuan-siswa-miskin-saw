@@ -403,10 +403,9 @@
     <script>
         $(function() {
             console.log($('.table'));
-            $('.table').each((i, value) => {
-                $(value).DataTable().destroy();
-            });
+            // $('.table').each((i, value) => {
+            //     $(value).DataTable().destroy();
+            // });
         })
     </script>
 @endpush
->

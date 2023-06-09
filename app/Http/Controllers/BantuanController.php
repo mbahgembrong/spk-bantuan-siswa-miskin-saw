@@ -205,7 +205,14 @@ class BantuanController extends Controller
 
     public function pdf(Request $request, $id)
     {
+        $bantuan = Bantuan::find($id);
+        if (empty($bantuan)) {
+            Flash::error('Bantuan not found');
 
+            return redirect(route('bantuans.index'));
+        }
+
+        return view('bantuans.pdf', compact(['bantuan']));
     }
     /**
      * Display the specified Bantuan.
