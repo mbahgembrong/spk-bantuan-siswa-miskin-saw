@@ -8,10 +8,11 @@
                     <h1>Bantuans</h1>
                 </div>
                 <div class="col-sm-6">
-                    <a class="btn btn-primary float-right"
-                       href="{{ route('bantuans.create') }}">
-                        Add New
-                    </a>
+                    @if (Auth::user()->role->role == 'admin')
+                        <a class="btn btn-primary float-right" href="{{ route('bantuans.create') }}">
+                            Add New
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -36,6 +37,4 @@
 
         </div>
     </div>
-
 @endsection
-
