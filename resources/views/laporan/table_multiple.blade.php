@@ -16,18 +16,12 @@
         </thead>
         <tbody>
             @foreach ($datas as $index => $data)
-                <tr
-                    data-rowcount="{{ $data->siswaDetail()->where('kriteria_id', $kriteriaId)->whereNull('kriteria_detail_id')->first()->subSiswaDetail->count() }}">
-                    <td class="text-center" style="vertical-align: middle;">{{ $index + 1 }}</td>
-                    <td class="text-center" style="vertical-align: middle;">
-                        {{ $data->nama }}</td>
-                    <td></td>
-                    <td></td>
-                </tr>
                 @foreach ($data->siswaDetail()->where('kriteria_id', $kriteriaId)->whereNull('kriteria_detail_id')->first()->subSiswaDetail as $subSiswaDetai)
-                    <tr>
-                        <td style="display:none;"></td>
-                        <td style="display:none;"></td>
+                    <tr
+                        data-rowcount="{{ $data->siswaDetail()->where('kriteria_id', $kriteriaId)->whereNull('kriteria_detail_id')->first()->subSiswaDetail->count() }}">
+                        <td class="text-center" style="vertical-align: middle;">{{ $index + 1 }}</td>
+                        <td class="text-center" style="vertical-align: middle;">
+                            {{ $data->nama }}</td>
                         <td>{{ $subSiswaDetai->keterangan }}</td>
                         <td>{{ $subSiswaDetai->kriteriaDetailId->nama }}</td>
                     </tr>
@@ -44,6 +38,7 @@
     <script>
         $(function() {
             $('#table_multiple').DataTable().destroy();
+            let indexTable = 0;
             $('#table_multiple').DataTable({
                 responsive: true,
                 "paging": false,
@@ -66,7 +61,9 @@
                         exportOptions: {
                             modifier: {
                                 page: 'current',
-                            }
+
+                            },
+                            columns: [1, 2, 3],
                         }
                     }
                 ],
@@ -79,14 +76,15 @@
                     return header;
                 },
                 'createdRow': function(row, data, dataIndex) {
-                    if (data[1] !== '') {
-                        const rowCount = parseInt($(row).data('rowcount')) + 1;
+                    if (data[0] != indexTable) {
+                        const rowCount = parseInt($(row).data('rowcount'));
                         $('td:eq(0)', row).attr('rowspan', rowCount);
                         $('td:eq(1)', row).attr('rowspan', rowCount);
-                        $('td:eq(2)', row).remove();
-                        $('td:eq(2)', row).remove();
-
+                    } else {
+                        $('td:eq(0)', row).hide();
+                        $('td:eq(1)', row).hide();
                     }
+                    indexTable = data[0];
                 }
             })
         })
