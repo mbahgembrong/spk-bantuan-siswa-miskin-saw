@@ -19,6 +19,6 @@ class CekLevel
         if (in_array($request->user()->role->role, $levels)) {
             return $next($request);
         }
-        return redirect('/login');
+        return redirect('/home');
     }
 }

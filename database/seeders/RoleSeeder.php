@@ -18,7 +18,7 @@ class RoleSeeder extends Seeder
             'role' => 'admin'
         ]);
         Role::create([
-            'role' => 'kepala sekolah'
+            'role' => 'kepala_sekolah'
         ]);
     }
 }
