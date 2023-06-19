@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bantuan;
+use App\Models\Kriteria;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +26,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        $count = [];
+        $count['kriteria'] = Kriteria::count();
+        $count['siswa'] = Siswa::count();
+        $count['bantuan_proses'] = Bantuan::where('status', 'proses')->count();
+        $count['bantuan_selesai'] = Bantuan::where('status', 'selesai')->count();
+        return view('home', compact('count'));
     }
 }
