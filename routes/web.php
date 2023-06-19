@@ -13,13 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+Route::get('/', function () {
+    return redirect('home');
+});
 
 Auth::routes();
 Route::get('menu', [App\Http\Controllers\MenuController::class, 'sideBar'])->name('menu');
 Route::middleware(['auth', 'ceklevel:admin,kepala_sekolah'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('roles', App\Http\Controllers\RoleController::class);
+    Route::resource('users', App\Http\Controllers\UserController::class);
     Route::resource('kriterias', App\Http\Controllers\KriteriaController::class);
     Route::prefix('kriteriadetails')->group(function () {
         Route::get('/create/{kriteriaId}', [App\Http\Controllers\KriteriadetailController::class, 'create'])->name('kriteriadetails.create');
@@ -44,4 +47,9 @@ Route::middleware(['auth', 'ceklevel:admin,kepala_sekolah'])->group(function () 
         Route::get('/bantuan', [App\Http\Controllers\LaporanController::class, 'bantuan'])->name('laporan.bantuan');
     });
     Route::resource('bantuans', App\Http\Controllers\BantuanController::class);
+
+    Route::prefix('/profile')->group(function () {
+        Route::get('/', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
+        Route::patch('/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    });
 });

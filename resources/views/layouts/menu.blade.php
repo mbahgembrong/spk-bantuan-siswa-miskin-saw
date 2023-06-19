@@ -1,12 +1,5 @@
 @if (Auth::user()->role->role == 'admin')
     <li class="nav-item">
-        <a href="{{ route('roles.index') }}" class="nav-link {{ Request::is('roles*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa-cog"></i>
-            <p>Role</p>
-        </a>
-    </li>
-
-    <li class="nav-item">
         <a href="#"
             class="nav-link {{ Request::is('kriteriadetails*') || Request::is('kriterias*') ? 'menu-is-opening menu-open' : '' }}">
             <i class="nav-icon fas fa-sitemap"></i>
@@ -84,6 +77,19 @@
             }
         </script>
     @endpush
+@else
+    <li class="nav-item">
+        <a href="{{ route('roles.index') }}" class="nav-link {{ Request::is('roles*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-cog"></i>
+            <p>Role</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('users.index') }}" class="nav-link {{ Request::is('users*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-users"></i>
+            <p>User</p>
+        </a>
+    </li>
 @endif
 <li class="nav-item">
     <a href="#" class="nav-link {{ Request::is('laporan*') ? 'menu-is-opening menu-open' : '' }}">

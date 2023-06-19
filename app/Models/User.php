@@ -42,6 +42,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public static $rules = [
+        'role_id' => 'required|exists:roles,id',
+        'nama' => 'required|string',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string',
+    ];
+
 
     /**
      * Get the role that owns the User

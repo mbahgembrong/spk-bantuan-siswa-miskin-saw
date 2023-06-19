@@ -1,4 +1,4 @@
 Rev
 - add relation in migration (fix)
-- laporan
+- laporan(fix)
 - login and middleware
