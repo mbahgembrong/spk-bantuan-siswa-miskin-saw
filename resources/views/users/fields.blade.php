@@ -16,3 +16,7 @@
     {!! Form::label('password', 'Password :') !!}
     {!! Form::password('password', ['class' => 'form-control']) !!}
 </div>
+<div class="form-group col-sm-6">
+    {!! Form::label('image', 'Foto :') !!}
+    {!! Form::file('image', ['class' => 'form-control']) !!}
+</div>

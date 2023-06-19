@@ -22,7 +22,9 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center image-container">
-                            <img class="profile-user-img img-fluid img-circle" src="{{ asset('img/logo.png') }}"
+                            <img class="profile-user-img img-fluid img-circle"
+                                src="{{ asset('users/image/' . auth()->user()->image) }}"
+                                onerror="this.onerror=null; this.src='{{ asset('img/logo.png') }}'"
                                 alt="User profile picture">
                             <button class="btn-circle btn" data-toggle="modal" data-target="#UploadClients"><i
                                     class="fas fa-camera"></i>
@@ -77,6 +79,42 @@
                     {!! Form::close() !!}
 
                 </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal --}}
+    <div class="modal" id="UploadClients">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Photo Profile</h4>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form role="form" action="{{ route('profile.image_update') }}" method="post"
+                        enctype="multipart/form-data">
+                        @method('post')
+                        @csrf
+                        <div class="container">
+
+                            <div class="col-md-4">
+                                <input type="file" class="form-control" placeholder="Enter Nick Name" type="text"
+                                    name="image">
+                            </div>
+                        </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success btn-sm shadow-sm"><i
+                            class="fas fa-check fa-sm text-white-50"></i> Submit</button>
+                    <button type="button" class="btn btn-danger btn-sm shadow-sm" data-dismiss="modal"><i
+                            class="fas fa-times fa-sm text-white-50"></i> Close</button>
+                </div>
+                </form>
             </div>
         </div>
     </div>

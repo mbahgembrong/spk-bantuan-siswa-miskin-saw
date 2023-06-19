@@ -60,14 +60,17 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown user-menu">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ asset('img/logo.png') }}" class="user-image img-circle elevation-2"
+                        <img src="{{ asset('users/image/' . auth()->user()->image) }}"
+                                onerror="this.onerror=null; this.src='{{ asset('img/logo.png') }}'" class="user-image img-circle elevation-2"
                             alt="User Image">
                         <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <!-- User image -->
                         <li class="user-header bg-primary">
-                            <img src="{{ asset('img/logo.png') }}" class="img-circle elevation-2" alt="User Image">
+                            <img src="{{ asset('users/image/' . auth()->user()->image) }}"
+                                onerror="this.onerror=null; this.src='{{ asset('img/logo.png') }}'"
+                                class="img-circle elevation-2" alt="User Image">
                             <p>
                                 {{ Auth::user()->name }}
                                 <small>Member since {{ Auth::user()->created_at->format('M. Y') }}</small>
@@ -102,10 +105,10 @@
         <!-- Main Footer -->
         <footer class="main-footer">
             <div class="float-right d-none d-sm-block">
-                <b>Version</b> 3.1.0
+                {{-- <b>Version</b> 3.1.0 --}}
             </div>
             <strong>
-                Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.
+                Copyright &copy; {{ date('Y') }} <a href="{{ url('/') }}">{{ env('APP_NAME') }}</a>.
             </strong>
             All rights reserved.
         </footer>

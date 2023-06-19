@@ -54,6 +54,13 @@ class UserController extends AppBaseController
         if (!is_null($request->password)) {
             $input['password'] = bcrypt($input['password']);
         }
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $name = time() . '.' . $image->getClientOriginalName();
+            $destinationPath = public_path('/users/image');
+            $image->move($destinationPath, $name);
+            $input['image'] = $name;
+        }
 
         /** @var User $user */
         $user = User::create($input);
@@ -128,6 +135,16 @@ class UserController extends AppBaseController
             $input['password'] = bcrypt($input['password']);
         } else
             unset($input['password']);
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $name = time() . '.' . $image->getClientOriginalName();
+            $destinationPath = public_path('/users/image');
+            $image->move($destinationPath, $name);
+            $input['image'] = $name;
+        } else
+            unset($input['image']);
+            
         $user->fill($input);
         $user->save();
 

@@ -51,5 +51,6 @@ Route::middleware(['auth', 'ceklevel:admin,kepala_sekolah'])->group(function () 
     Route::prefix('/profile')->group(function () {
         Route::get('/', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
         Route::patch('/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+        Route::post('/image_update', [App\Http\Controllers\ProfileController::class, 'image_update'])->name('profile.image_update');
     });
 });

@@ -15,9 +15,9 @@
                     <td width="120">
                         {!! Form::open(['route' => ['roles.destroy', $role->id], 'method' => 'delete']) !!}
                         <div class='btn-group'>
-                            <a href="{{ route('roles.show', [$role->id]) }}" class='btn btn-default btn-xs'>
+                            {{-- <a href="{{ route('roles.show', [$role->id]) }}" class='btn btn-default btn-xs'>
                                 <i class="far fa-eye"></i>
-                            </a>
+                            </a> --}}
                             <a href="{{ route('roles.edit', [$role->id]) }}" class='btn btn-default btn-xs'>
                                 <i class="far fa-edit"></i>
                             </a>
