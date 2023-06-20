@@ -136,7 +136,7 @@ class UserController extends AppBaseController
         } else
             unset($input['password']);
 
-        if ($request->hasFile('image') && $image->getClientOriginalName() != $user->image) {
+        if ($request->hasFile('image') && $request->file('image')->getClientOriginalName() != $user->image) {
             $image = $request->file('image');
             $name = time() . '.' . $image->getClientOriginalName();
             $destinationPath = public_path('/users/image');
