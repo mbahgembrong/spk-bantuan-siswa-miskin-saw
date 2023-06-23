@@ -24,7 +24,8 @@
                     <td>{{ Carbon::parse($siswa->tanggal_lahir)->format('d/m/Y') }}</td>
                     <td>{{ $siswa->ibu }}</td>
                     <td>{{ $siswa->ayah }}</td>
-                    <td>{{ $siswa->foto }}</td>
+                    <td> <img class="boxed--square--detail" src="{{ asset('storage/siswas/foto/' . $siswa->foto) }}"
+                            onerror="this.onerror=null; this.src='{{ asset('img/no-image.jpg') }}'" /></td>
                     <td>{!! $siswa->alamat !!}</td>
                     <td width="120">
                         {!! Form::open(['route' => ['siswas.destroy', $siswa->id], 'method' => 'delete']) !!}
@@ -73,4 +74,22 @@
             });
         })
     </script>
+@endpush
+@push('page_css')
+    <style>
+        .boxed--square--detail {
+            border-radius: 10%;
+            width: 8em;
+            height: 8em;
+            object-fit: fill;
+            box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.6);
+            -moz-box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.6);
+            -webkit-box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.6);
+            -o-box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.6);
+        }
+
+        tbody tr td {
+            vertical-align: middle !important;
+        }
+    </style>
 @endpush

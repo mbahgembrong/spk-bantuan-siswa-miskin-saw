@@ -37,6 +37,7 @@ class Siswa extends Model
 
     public $fillable = [
         'nis',
+        'nisn',
         'nama',
         'alamat',
         'jenis_kelamin',
@@ -53,6 +54,7 @@ class Siswa extends Model
      */
     protected $casts = [
         'nis' => 'string',
+        'nisn' => 'string',
         'nama' => 'string',
         'alamat' => 'string',
         'jenis_kelamin' => 'string',

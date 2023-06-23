@@ -40,8 +40,18 @@ class SiswaController extends AppBaseController
      */
     public function create()
     {
+        $nis = Siswa::select('nis')->orderBy('created_at', 'DESC')->first();
+        if (is_null($nis)) {
+            $nis = date('Y') . '1';
+        } else {
+            if (date('Y') != substr($nis->nis, 0, 4))
+                $nis = date('Y') . '1';
+            else {
+                $nis = date('Y') . ((int) substr($nis->nis, 4) + 1);
+            }
+        }
         $kriterias = Kriteria::all();
-        return view('siswas.create', compact('kriterias'));
+        return view('siswas.create', compact(['kriterias', 'nis']));
     }
 
     /**
@@ -55,7 +65,21 @@ class SiswaController extends AppBaseController
     {
         $input = $request->all();
         $input['tanggal_lahir'] = Carbon::createFromFormat('d/m/Y', $input['tanggal_lahir'])->format('Y-m-d');
-        // dd($input);
+
+        if (is_null($request->nisn)) {
+            $yearNisn = substr(Carbon::createFromFormat('d/m/Y', $request->tanggal_lahir)->format('Y'), 2);
+            $digits = 4;
+            $nisn = $yearNisn . $yearNisn . rand(pow(10, $digits - 1), pow(10, $digits) - 1) . rand(pow(10, $digits - 1), pow(10, $digits) - 1);
+            $input['nisn'] = $nisn;
+        }
+
+        if ($request->hasFile('foto')) {
+            $foto = $request->file('foto');
+            $name = time() . '.' . $foto->getClientOriginalName();
+            $destinationPath = public_path('/storage/siswas/foto');
+            $foto->move($destinationPath, $name);
+            $input['foto'] = $name;
+        }
         $kriteriaSingle = [];
         $kriteriaMultiple = [];
         foreach ($input as $key => $value) {
@@ -180,6 +204,20 @@ class SiswaController extends AppBaseController
                 $kriteriaMultiple[$key] = $value;
             }
         }
+        if (is_null($request->nisn)) {
+            $yearNisn = substr(Carbon::createFromFormat('d/m/Y', $request->tanggal_lahir)->format('Y'), 2);
+            $digits = 4;
+            $nisn = $yearNisn . $yearNisn . rand(pow(10, $digits - 1), pow(10, $digits) - 1) . rand(pow(10, $digits - 1), pow(10, $digits) - 1);
+            $input['nisn'] = $nisn;
+        }
+        if ($request->hasFile('foto') && $request->file('foto')->getClientOriginalName() != $siswa->foto) {
+            $foto = $request->file('foto');
+            $name = time() . '.' . $foto->getClientOriginalName();
+            $destinationPath = public_path('/storage/siswas/foto');
+            $foto->move($destinationPath, $name);
+            $input['foto'] = $name;
+        } else
+            unset($input['foto']);
 
         $siswa->fill($input);
         $siswa->save();

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laporan  Penilaian Bantuan {{ ucfirst($bantuan->nama) }}</title>
+    <title>Laporan Penilaian Bantuan {{ ucfirst($bantuan->nama) }}</title>
     <style type="text/css">
         table {
             border-spacing: 0;
@@ -128,7 +128,7 @@
     </style>
 </head>
 
-<body  onLoad="window.print()">
+<body onLoad="window.print()">
     <table width="100%" id="tableKop">
         <tr>
             <td width="13%" align="right" style="padding-bottom:15px"><img src="{{ asset('img/logo.png') }}"
@@ -144,7 +144,7 @@
         </tr>
     </table>
     <div style="margin-bottom: 0;text-align:center;margin-top:16px" id="judul">
-        <h2>Laporan  Penilaian Bantuan {{ ucfirst($bantuan->nama) }}</h2>
+        <h2>Laporan Penilaian Bantuan {{ ucfirst($bantuan->nama) }}</h2>
         <p for=""></p>
     </div>
     <br>
@@ -190,6 +190,9 @@
                 Nama siswa
             </th>
             <th>
+                NISN
+            </th>
+            <th>
                 Jenis Kelamin
             </th>
             <th>
@@ -203,6 +206,7 @@
             <tr>
                 <td class="babeng-min-row">{{ $key + 1 }}</td>
                 <td>{{ $siswa->siswa->nama }}</td>
+                <td>{{ $siswa->siswa->nisn ?? '-' }}</td>
                 <td>{{ $siswa->siswa->jenis_kelamin == 'P' ? 'Perempuan' : 'Laki-Laki' }}</td>
                 <td>{{ Carbon::parse($siswa->siswa->tanggal_lahir)->format('d/m/Y') }}</td>
                 <td>{{ $siswa->bobot }}</td>

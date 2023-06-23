@@ -57,7 +57,7 @@ class UserController extends AppBaseController
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $name = time() . '.' . $image->getClientOriginalName();
-            $destinationPath = public_path('/users/image');
+            $destinationPath = public_path('/storage/users/image');
             $image->move($destinationPath, $name);
             $input['image'] = $name;
         }
@@ -139,7 +139,7 @@ class UserController extends AppBaseController
         if ($request->hasFile('image') && $request->file('image')->getClientOriginalName() != $user->image) {
             $image = $request->file('image');
             $name = time() . '.' . $image->getClientOriginalName();
-            $destinationPath = public_path('/users/image');
+            $destinationPath = public_path('/storage/users/image');
             $image->move($destinationPath, $name);
             $input['image'] = $name;
         } else

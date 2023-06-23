@@ -3,12 +3,14 @@
         <thead>
             <tr>
                 <th class="text-center" style="vertical-align: middle;">#</th>
+                <th class="text-center" style="vertical-align: middle;">NISN</th>
                 <th class="text-center" style="vertical-align: middle;">Nama Siswa</th>
                 <th class="text-center" style="vertical-align: middle;">Data</th>
                 <th></th>
             </tr>
             <tr>
                 <th style="display: none;">#</th>
+                <th style="display: none;">NISN</th>
                 <th style="display: none;">Nama Siswa</th>
                 <th class="text-center" style="vertical-align: middle;">Keterangan</th>
                 <th class="text-center" style="vertical-align: middle;">Kriteria</th>
@@ -20,6 +22,8 @@
                     <tr
                         data-rowcount="{{ $data->siswaDetail()->where('kriteria_id', $kriteriaId)->whereNull('kriteria_detail_id')->first()->subSiswaDetail->count() }}">
                         <td class="text-center" style="vertical-align: middle;">{{ $index + 1 }}</td>
+                        <td class="text-center" style="vertical-align: middle;">
+                            {{ $data->nisn ?? '-' }}</td>
                         <td class="text-center" style="vertical-align: middle;">
                             {{ $data->nama }}</td>
                         <td>{{ $subSiswaDetai->keterangan }}</td>
@@ -81,8 +85,9 @@
                     const header = $(thead);
                     header.find('th').eq(0).attr('rowspan', 2);
                     header.find('th').eq(1).attr('rowspan', 2);
-                    header.find('th').eq(2).attr('colspan', 2);
-                    header.find('th').eq(3).remove();
+                    header.find('th').eq(2).attr('rowspan', 2);
+                    header.find('th').eq(3).attr('colspan', 2);
+                    header.find('th').eq(4).remove();
                     return header;
                 },
                 'createdRow': function(row, data, dataIndex) {
@@ -90,9 +95,11 @@
                         const rowCount = parseInt($(row).data('rowcount'));
                         $('td:eq(0)', row).attr('rowspan', rowCount);
                         $('td:eq(1)', row).attr('rowspan', rowCount);
+                        $('td:eq(2)', row).attr('rowspan', rowCount);
                     } else {
                         $('td:eq(0)', row).hide();
                         $('td:eq(1)', row).hide();
+                        $('td:eq(2)', row).hide();
                     }
                     indexTable = data[0];
                 }

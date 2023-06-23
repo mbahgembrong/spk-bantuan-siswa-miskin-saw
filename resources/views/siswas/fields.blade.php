@@ -1,11 +1,15 @@
 <!-- Nis Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('nis', 'NIS:') !!}
-    {!! Form::text('nis', null, ['class' => 'form-control']) !!}
+    {!! Form::text('nis', null, ['class' => 'form-control', 'readonly']) !!}
 </div>
-
+<!-- Nis Field -->
+<div class="form-group col-sm-6" id="form_nisn">
+    {!! Form::label('nisn', 'NISN:') !!}
+    {!! Form::text('nisn', null, ['class' => 'form-control']) !!}
+</div>
 <!-- Nama Field -->
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-6" >
     {!! Form::label('nama', 'Nama:') !!}
     {!! Form::text('nama', null, ['class' => 'form-control']) !!}
 </div>

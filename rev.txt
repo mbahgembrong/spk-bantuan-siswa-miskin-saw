@@ -3,6 +3,6 @@ Rev
 - laporan(fix)
 - login and middleware(fix)
 - hapus button print in all module kecuali laporan module(fix)
-- menu bantuan ditambah action delete
-- nis in siswa auto increment
-- add nisn auto generate in siswa
+- menu bantuan ditambah action delete(fix)
+- nis in siswa auto increment (fix)
+- add nisn auto generate in siswa (fix)

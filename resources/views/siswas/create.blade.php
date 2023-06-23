@@ -37,19 +37,21 @@
         </div>
     </div>
 @endsection
-{{-- @push('page_scripts')
+@push('page_scripts')
     <script>
         $(function() {
-            $('input[name="foto"]').filepond({
-                labelIdle: `Drag & Drop your picture or <span class="filepond--label-action">Browse</span>`,
-                storeAsFile: true,
-                imagePreviewMaxHeight: 150,
-                imagePreviewTransparencyIndicator: 'grid',
-                acceptedFileTypes: ['image/*'],
-                fileValidateTypeDetectType: (source, type) => new Promise((resolve, reject) => {
-                    resolve(type);
-                }),
-            });
+            $('input[name="nis"]').val({!! json_encode($nis) !!});
+            $('#form_nisn').hide();
+            //     $('input[name="foto"]').filepond({
+            //         labelIdle: `Drag & Drop your picture or <span class="filepond--label-action">Browse</span>`,
+            //         storeAsFile: true,
+            //         imagePreviewMaxHeight: 150,
+            //         imagePreviewTransparencyIndicator: 'grid',
+            //         acceptedFileTypes: ['image/*'],
+            //         fileValidateTypeDetectType: (source, type) => new Promise((resolve, reject) => {
+            //             resolve(type);
+            //         }),
+            //     });
         })
     </script>
-@endpush --}}
+@endpush

@@ -6,6 +6,7 @@
                 <th>Nama</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Image</th>
                 <th aria-colspan="3">Action</th>
             </tr>
         </thead>
@@ -16,6 +17,8 @@
                     <td>{{ $user->nama }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->role->role }}</td>
+                    <td> <img class="boxed--square--detail" src="{{ asset('storage/users/foto/' . $user->foto) }}"
+                            onerror="this.onerror=null; this.src='{{ asset('img/no-image.jpg') }}'" /></td>
                     <td width="120">
                         {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete']) !!}
                         <div class='btn-group'>
@@ -63,4 +66,22 @@
             });
         })
     </script>
+@endpush
+@push('page_css')
+    <style>
+        .boxed--square--detail {
+            border-radius: 10%;
+            width: 8em;
+            height: 8em;
+            object-fit: fill;
+            box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.6);
+            -moz-box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.6);
+            -webkit-box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.6);
+            -o-box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.6);
+        }
+
+        tbody tr td {
+            vertical-align: middle !important;
+        }
+    </style>
 @endpush
