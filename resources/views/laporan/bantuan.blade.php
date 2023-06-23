@@ -31,3 +31,34 @@
         </div>
     </div>
 @endsection
+@push('third_party_scripts')
+    @include('layouts.datatables_js')
+    <script>
+        $(function() {
+            $('.table').DataTable({
+                scrollX: true,
+                responsive: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'excel', 'pdf', 'print'
+                ]
+            });
+            $('.btn-delete').click(function(event) {
+                var form = $(this).closest("form")[0];
+                event.preventDefault();
+                Swal.fire({
+                    title: "Are you sure!",
+                    icon: 'warning',
+                    confirmButtonText: "Yes!",
+                    showCancelButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                });
+            });
+        })
+    </script>
+@endpush

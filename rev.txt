@@ -1,4 +1,8 @@
 Rev
 - add relation in migration (fix)
 - laporan(fix)
-- login and middleware
+- login and middleware(fix)
+- hapus button print in all module kecuali laporan module(fix)
+- menu bantuan ditambah action delete
+- nis in siswa auto increment
+- add nisn auto generate in siswa
