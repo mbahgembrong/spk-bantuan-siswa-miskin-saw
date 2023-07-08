@@ -116,10 +116,10 @@ class SiswaController extends AppBaseController
                         'siswa_detail_id' => $siswaDetail->id,
                         'kriteria_id' => $kriteriaId,
                         'kriteria_detail_id' => $value,
-                        'bobot' => $kriteria->bobot,
+                        'bobot' => $kriteria->bobot ??0,
                         'keterangan' => $kriteriaMultiple['keterangan_' . $kriteriaId][$key]
                     ]);
-                    $bobot += $kriteria->bobot;
+                    $bobot += $kriteria->bobot??0;
                 }
                 $siswaDetail->bobot = $bobot / $countSubSiswaDetail;
                 $siswaDetail->save();
@@ -236,7 +236,7 @@ class SiswaController extends AppBaseController
                 'siswa_id' => $siswa->id,
                 'kriteria_id' => $key,
                 'kriteria_detail_id' => $value,
-                'bobot' => $kriteria->bobot,
+                'bobot' => $kriteria->bobot ??0,
                 'keterangan' => $kriteria->nama
             ]);
         }
@@ -255,10 +255,10 @@ class SiswaController extends AppBaseController
                         'siswa_detail_id' => $siswaDetail->id,
                         'kriteria_id' => $kriteriaId,
                         'kriteria_detail_id' => $value,
-                        'bobot' => $kriteria->bobot,
+                        'bobot' => $kriteria->bobot ??0,
                         'keterangan' => $kriteriaMultiple['keterangan_' . $kriteriaId][$key]
                     ]);
-                    $bobot += $kriteria->bobot;
+                    $bobot += $kriteria->bobot??0;
                 }
                 $siswaDetail->bobot = $bobot / $countSubSiswaDetail;
                 $siswaDetail->save();
