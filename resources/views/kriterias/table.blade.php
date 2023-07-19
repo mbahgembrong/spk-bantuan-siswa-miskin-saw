@@ -2,6 +2,7 @@
     <table class="table" id="kriterias-table">
         <thead>
             <tr>
+                <th>#</th>
                 <th>Nama</th>
                 <th>Kode</th>
                 <th>Bobot</th>
@@ -14,6 +15,7 @@
         <tbody>
             @foreach ($kriterias as $kriteria)
                 <tr>
+                    <td>{{ $loop->index + 1 }}</td>
                     <td>{{ $kriteria->nama }}</td>
                     <td>{{ $kriteria->kode }}</td>
                     <td>{{ $kriteria->bobot }}</td>
@@ -42,6 +44,14 @@
                 </tr>
             @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="3" style="text-align: end;">Total : </th>
+                <th>{{ $kriterias->sum('bobot') }}</th>
+                <th>{{ $kriterias->sum('bobot') / 100 }}</th>
+                <th colspan="3"></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 @push('third_party_scripts')

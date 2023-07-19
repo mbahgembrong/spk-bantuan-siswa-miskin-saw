@@ -40,6 +40,14 @@
                 </tr>
             @endforeach
         </tbody>
+         <tfoot>
+            <tr>
+                <th colspan="3" style="text-align: end;">Total : </th>
+                <th>{{ $kriteriadetails->sum('bobot') }}</th>
+                <th>{{ $kriteriadetails->sum('bobot') / 100 }}</th>
+                <th colspan="2"></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 @push('third_party_scripts')
