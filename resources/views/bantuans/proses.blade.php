@@ -50,6 +50,13 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="2" style="text-align: end;">Total : </th>
+                                        <th>{{ $vectorBobot->sum('bobot') }}</th>
+                                        <th>{{ $vectorBobot->sum('bobot') / 100 }}</th>
+                                        <th colspan="3"></th>
+                                    </tr>
                             </table>
                         </div>
                     </div>
@@ -384,7 +391,8 @@
                                             <td>{{ $no++ }}</td>
                                             <td class="text-no-wrap">{{ $siswa['siswa_nama'] }}</td>
                                             <td class="text-no-wrap">{{ $siswa['total_nilai'] }}</td>
-                                            <td><span class="badge badge-primary w-100 h-100">
+                                            <td><span
+                                                    class="badge badge-{{ $siswa['menerima_bantuan'] == 'Ya' ? 'success' : 'warning' }} w-100 h-100">
                                                     {{ $siswa['menerima_bantuan'] }}
                                                 </span>
                                             </td>
