@@ -256,7 +256,6 @@ class SiswaController extends AppBaseController
                 $bobot = 0;
                 $countSubSiswaDetail = count($kriteriaMultiple[$key]);
                 foreach ($kriteriaMultiple['bobot_' . $kriteriaId] as $key => $value) {
-                    dd($kriteriaMultiple);
                     $kriteria = Kriteriadetail::find($value);
                     SubSiswaDetail::create([
                         'siswa_detail_id' => $siswaDetail->id,

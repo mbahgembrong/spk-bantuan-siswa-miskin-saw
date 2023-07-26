@@ -58,7 +58,7 @@
                                 var fieldHTML = `
                             <div class="mb-3 form-group_{{ $siswaDetail->kriteria_id }} fieldGroup_{{ $siswaDetail->kriteria_id }}" data-id="{{ $key + 1 }}">
                                 <div class="input-group">
-                                    <input type="text" name="keterangan_{{ $siswaDetail->kriteria_id }}[]" class="form-control keterangan_{{ $siswaDetail->kriteria_id }}" placeholder="Keterangan" />
+                                    <input type="text" name="keterangan_{{ $siswaDetail->kriteria_id }}[]" class="form-control keterangan_{{ $siswaDetail->kriteria_id }}" placeholder="Keterangan" value="{{ $value->keterangan }}"/>
                                     <input type="number" name="nilai_{{ $siswaDetail->kriteria_id }}[]" class="form-control nilai_{{ $siswaDetail->kriteria_id }} form_nilai" placeholder="Nilai" value="{{ $value->nilai }}"/>
                                     <input type="hidden" name="{{ 'bobot_' . $siswaDetail->kriteria_id . '[]' }}" value="{{ $value->kriteria_detail_id }}" class="{{ 'bobot_' . $siswaDetail->kriteria_id }}">
                                     <div class="input-group-addon ml-3">
