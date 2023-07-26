@@ -319,6 +319,7 @@
                     btn.closest('tr').remove();
 
                     updateNumber();
+                    changeBobot()
                 }
             });
 
