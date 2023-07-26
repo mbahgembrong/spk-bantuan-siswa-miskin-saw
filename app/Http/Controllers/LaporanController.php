@@ -12,13 +12,13 @@ class LaporanController extends Controller
     public function prestasi(Request $request)
     {
         $siswas = Siswa::all();
-        $kriteriaId = Kriteria::where('kode', 'prestasi')->first()->id;
+        $kriteriaId = Kriteria::where('kode', 'prestasi')->withTrashed()->first()->id;
         return view('laporan.prestasi', compact(['siswas', 'kriteriaId']));
     }
     public function nilai(Request $request)
     {
         $siswas = Siswa::all();
-        $kriteriaId = Kriteria::where('kode', 'nilai')->first()->id;
+        $kriteriaId = Kriteria::where('kode', 'nilai')->withTrashed()->first()->id;
         return view('laporan.nilai', compact(['siswas', 'kriteriaId']));
     }
     public function bantuan(Request $request)
