@@ -225,12 +225,12 @@
                 if (digit.length == 2) {
                     if (digit[0] < digit[1]) {
                         if (operator[0] == '>') {
-                            if (nilai < digit[0] && nilai > digit[1]) {
+                            if (nilai < digit[0] && nilai >= digit[1]) {
                                 return key;
                             }
                         }
                         if (operator[0] == '<') {
-                            if (nilai > digit[0] && nilai < digit[1]) {
+                            if (nilai > digit[0] && nilai <= digit[1]) {
                                 return key;
                             }
 
@@ -242,12 +242,12 @@
                         }
                     } else {
                         if (operator[0] == '>') {
-                            if (nilai > digit[0] && nilai < digit[1]) {
+                            if (nilai >= digit[0] && nilai < digit[1]) {
                                 return key;
                             }
                         }
                         if (operator[0] == '<') {
-                            if (nilai < digit[0] && nilai > digit[1]) {
+                            if (nilai <= digit[0] && nilai > digit[1]) {
                                 return key;
                             }
                         }
@@ -259,12 +259,12 @@
                     }
                 } else {
                     if (operator == '>') {
-                        if (nilai > digit) {
+                        if (nilai >= digit) {
                             return key;
                         }
                     }
                     if (operator == '<') {
-                        if (nilai < digit) {
+                        if (nilai <= digit) {
                             return key;
                         }
                     }
