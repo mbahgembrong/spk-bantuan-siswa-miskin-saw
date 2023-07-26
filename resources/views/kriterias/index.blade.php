@@ -8,8 +8,7 @@
                     <h1>Kriteria</h1>
                 </div>
                 <div class="col-sm-6">
-                    <a class="btn btn-primary float-right"
-                       href="{{ route('kriterias.create') }}">
+                    <a class="btn btn-primary float-right" id="btn-add" href="{{ route('kriterias.create') }}">
                         Add New
                     </a>
                 </div>
@@ -36,6 +35,4 @@
 
         </div>
     </div>
-
 @endsection
-

@@ -25,7 +25,9 @@ class UpdateKriteriaRequest extends FormRequest
     public function rules()
     {
         $rules = Kriteria::$rules;
-        
+        foreach ($rules as $key => $value) {
+            $rules[$key] = str_replace('required', 'nullable', $value);
+        }
         return $rules;
     }
 }

@@ -1,0 +1,4 @@
+- Edit halaman Kriteria, on change
+- Edit siswa bug foto
+- Input angka di siswa, bagian rata" nilai
+- sort sub kriteria by bobot

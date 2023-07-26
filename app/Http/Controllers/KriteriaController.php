@@ -47,14 +47,30 @@ class KriteriaController extends AppBaseController
      */
     public function store(CreateKriteriaRequest $request)
     {
-        $input = $request->all();
+        try {
+            $input = $request->all();
 
-        /** @var Kriteria $kriteria */
-        $kriteria = Kriteria::create($input);
+            /** @var Kriteria $kriteria */
+            $kriteria = Kriteria::create($input);
 
-        Flash::success('Kriteria saved successfully.');
+            return response([
+                'status' => 'success',
+                'message' => 'Kriteria saved successfully.',
+                'data' => $kriteria
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response([
+                'status' => 'error',
+                'message' => 'Kriteria failed to save.',
+                'data' => $th->getMessage()
+            ], 400);
+        }
 
-        return redirect(route('kriterias.index'));
+
+        // Flash::success('Kriteria saved successfully.');
+
+        // return redirect(route('kriterias.index'));
     }
 
     /**
@@ -109,21 +125,41 @@ class KriteriaController extends AppBaseController
      */
     public function update($id, UpdateKriteriaRequest $request)
     {
-        /** @var Kriteria $kriteria */
-        $kriteria = Kriteria::find($id);
+        try {
+            /** @var Kriteria $kriteria */
+            $kriteria = Kriteria::find($id);
 
-        if (empty($kriteria)) {
-            Flash::error('Kriteria not found');
+            if (empty($kriteria)) {
+                // Flash::error('Kriteria not found');
 
-            return redirect(route('kriterias.index'));
+                // return redirect(route('kriterias.index'));
+                return response([
+                    'status' => 'error',
+                    'message' => 'Kriteria not found.',
+                    'data' => null
+                ], 400);
+            }
+
+            $kriteria->fill($request->all());
+            $kriteria->save();
+            return response([
+                'status' => 'success',
+                'message' => 'Kriteria updated successfully.',
+                'data' => $kriteria
+            ], 200);
+        } catch (\Throwable $th) {
+            return response([
+                'status' => 'error',
+                'message' => 'Kriteria failed to update.',
+                'data' => $th->getMessage()
+            ], 500);
         }
 
-        $kriteria->fill($request->all());
-        $kriteria->save();
 
-        Flash::success('Kriteria updated successfully.');
 
-        return redirect(route('kriterias.index'));
+        // Flash::success('Kriteria updated successfully.');
+
+        // return redirect(route('kriterias.index'));
     }
 
     /**
@@ -138,18 +174,34 @@ class KriteriaController extends AppBaseController
     public function destroy($id)
     {
         /** @var Kriteria $kriteria */
-        $kriteria = Kriteria::find($id);
+        try {
+            $kriteria = Kriteria::find($id);
 
-        if (empty($kriteria)) {
-            Flash::error('Kriteria not found');
+            if (empty($kriteria)) {
+                return response([
+                    'status' => 'error',
+                    'message' => 'Kriteria not found.',
+                    'data' => null
+                ], 400);
+            }
 
-            return redirect(route('kriterias.index'));
+            $kriteria->delete();
+            return response([
+                'status' => 'success',
+                'message' => 'Kriteria deleted successfully.',
+                // 'data' => $kriteria
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response([
+                'status' => 'error',
+                'message' => 'Kriteria failed to delete.',
+                'data' => $th->getMessage()
+            ], 500);
         }
 
-        $kriteria->delete();
+        // Flash::success('Kriteria deleted successfully.');
 
-        Flash::success('Kriteria deleted successfully.');
-
-        return redirect(route('kriterias.index'));
+        // return redirect(route('kriterias.index'));
     }
 }
