@@ -18,7 +18,7 @@
         </thead>
         <tbody>
             @foreach ($datas as $index => $data)
-                @foreach ($data->siswaDetail()->where('kriteria_id', $kriteriaId)->whereNull('kriteria_detail_id')->first()->subSiswaDetail as $subSiswaDetai)
+                @foreach (($data->siswaDetail()->where('kriteria_id', $kriteriaId)->whereNull('kriteria_detail_id')->first()->subSiswaDetail??[]) as $subSiswaDetai)
                     <tr
                         data-rowcount="{{ $data->siswaDetail()->where('kriteria_id', $kriteriaId)->whereNull('kriteria_detail_id')->first()->subSiswaDetail->count() }}">
                         <td class="text-center" style="vertical-align: middle;">{{ $index + 1 }}</td>
