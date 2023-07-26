@@ -24,7 +24,7 @@ class KriteriadetailController extends AppBaseController
     {
         $kriteria = Kriteria::find($kriteriaId);
         /** @var Kriteriadetail $kriteriadetails */
-        $kriteriadetails = Kriteriadetail::where('kriteria_id', $kriteriaId)->get();
+        $kriteriadetails = Kriteriadetail::where('kriteria_id', $kriteriaId)->orderBy('bobot', 'DESC')->get();
 
         return view('kriteriadetails.index', compact('kriteria'))
             ->with('kriteriadetails', $kriteriadetails);
