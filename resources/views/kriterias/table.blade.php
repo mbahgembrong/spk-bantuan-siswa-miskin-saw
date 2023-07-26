@@ -217,14 +217,19 @@
                             id: id,
                             bobot: bobot.val()
                         })
+
                     } else {
                         console.log(bobot);
                         addKriteria({
                             tr: bobot.closest('tr'),
                             bobot: bobot.val()
                         })
+
                     }
+                } else {
+
                 }
+
             });
             $(document).on('change', '.jenis', function(e) {
                 e.preventDefault();
@@ -419,8 +424,13 @@
                 bobot,
                 tr
             }) {
-                let totalBobot = {{ $kriterias->sum('bobot') }};
-                if (totalBobot + bobot > 100) {
+                let totalBobot = 0;
+                // from each
+                $('.table tbody tr').each(function(index, el) {
+                    // chnage bobot
+                    totalBobot += parseInt($(el).find('.bobot').val());
+                });
+                if (totalBobot > 100) {
                     Swal.fire({
                         title: "Error!",
                         text: "Total Bobot Melebihi 100",
@@ -431,13 +441,24 @@
                         if (result.isConfirmed) {
                             tr.find('.bobot').val(0);
                             tr.find('.weight').html(0);
+                            changeBobot()
                         }
                     });
+
                     return false;
                 }
-                $('tfoot tr th:nth-child(2)').html(totalBobot + bobot);
-                $('tfoot tr th:nth-child(3)').html((totalBobot + bobot) / 100);
+                changeBobot()
                 return true;
+            }
+
+            function changeBobot() {
+                let totalBobot = 0;
+                $('.table tbody tr').each(function(index, el) {
+                    // chnage bobot
+                    totalBobot += parseInt($(el).find('.bobot').val());
+                });
+                $('tfoot tr th:nth-child(2)').html(totalBobot);
+                $('tfoot tr th:nth-child(3)').html((totalBobot) / 100);
             }
         })
     </script>
