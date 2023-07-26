@@ -47,29 +47,48 @@
             $(function() {
                 const siswaDetail = {!! json_encode($siswaDetail) !!};
                 @foreach ($siswaDetail->subSiswaDetail as $key => $value)
-                    @if ($key == 0)
-                        $('.keterangan_{{ $siswaDetail->kriteria_id }}').val("{{ $value->keterangan }}");
-                        $('.bobot_{{ $siswaDetail->kriteria_id }}').val("{{ $value->kriteria_detail_id }}");
-                    @else
-                        var fieldHTML =
-                            '<div class="mb-3 form-group_{{ $siswaDetail->kriteria_id }} fieldGroup_{{ $siswaDetail->kriteria_id }}" data-id="{{ $key + 1 }}">' +
-                            '<div class="input-group">' +
-                            '<input type="text" name="keterangan_{{ $siswaDetail->kriteria_id }}[]" class = "form-control keterangan_{{ $siswaDetail->kriteria_id }}" placeholder = "Keterangan" value="{{ $value->keterangan }}" /> ' +
-                            '{!! Form::select(
-                                'bobot_' . $siswaDetail->kriteria_id . '[]',
-                                $kriterias->find($siswaDetail->kriteria_id)->kriteriaDetail->pluck('nama', 'id'),
-                                $value->kriteria_detail_id,
-                                [
-                                    'class' => 'form-control bobot_' . $siswaDetail->kriteria_id,
-                                    'placeholder' => 'Masukkan Nilai',
-                                ],
-                            ) !!}' +
-                            '<div class="input-group-addon ml-3">' +
-                            '<a href="javascript:void(0)" class="btn btn-danger remove_{{ $siswaDetail->kriteria_id }}"><i class="fa fa-minus"></i></a>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>';
-                        $('.fieldGroup_{{ $siswaDetail->kriteria_id }}:last').after(fieldHTML);
+                    @if (!empty($kriterias->find($siswaDetail->kriteria_id)))
+                        @if ($key == 0)
+                            $('.keterangan_{{ $siswaDetail->kriteria_id }}').val("{{ $value->keterangan }}");
+                            $('.bobot_{{ $siswaDetail->kriteria_id }}').val("{{ $value->kriteria_detail_id }}");
+                            $('.nilai_{{ $siswaDetail->kriteria_id }}').val("{{ $value->nilai }}");
+                            console.log("{{ $value->nilai }}");
+                        @else
+                            @if ($kriterias->find($siswaDetail->kriteria_id)->kode == 'nilai')
+                                var fieldHTML = `
+                            <div class="mb-3 form-group_{{ $siswaDetail->kriteria_id }} fieldGroup_{{ $siswaDetail->kriteria_id }}" data-id="{{ $key + 1 }}">
+                                <div class="input-group">
+                                    <input type="text" name="keterangan_{{ $siswaDetail->kriteria_id }}[]" class="form-control keterangan_{{ $siswaDetail->kriteria_id }}" placeholder="Keterangan" />
+                                    <input type="number" name="nilai_{{ $siswaDetail->kriteria_id }}[]" class="form-control nilai_{{ $siswaDetail->kriteria_id }} form_nilai" placeholder="Nilai" value="{{ $value->nilai }}"/>
+                                    <input type="hidden" name="{{ 'bobot_' . $siswaDetail->kriteria_id . '[]' }}" value="{{ $value->kriteria_detail_id }}" class="{{ 'bobot_' . $siswaDetail->kriteria_id }}">
+                                    <div class="input-group-addon ml-3">
+                                        <a href="javascript:void(0)" class="btn btn-danger remove_{{ $siswaDetail->kriteria_id }}"><i class="fa fa-minus"></i></a>
+                                    </div>
+                                </div>
+                            </div>`
+                            @else
+                                var fieldHTML =
+                                    '<div class="mb-3 form-group_{{ $siswaDetail->kriteria_id }} fieldGroup_{{ $siswaDetail->kriteria_id }}" data-id="{{ $key + 1 }}">' +
+                                    '<div class="input-group">' +
+                                    '<input type="text" name="keterangan_{{ $siswaDetail->kriteria_id }}[]" class = "form-control keterangan_{{ $siswaDetail->kriteria_id }}" placeholder = "Keterangan" value="{{ $value->keterangan }}" /> ' +
+                                    '{!! Form::select(
+                                        'bobot_' . $siswaDetail->kriteria_id . '[]',
+                                        $kriterias->find($siswaDetail->kriteria_id)->kriteriaDetail->pluck('nama', 'id') ?? [],
+                                        $value->kriteria_detail_id ?? '',
+                                        [
+                                            'class' => 'form-control bobot_' . $siswaDetail->kriteria_id,
+                                            'placeholder' => 'Masukkan Nilai',
+                                        ],
+                                    ) !!}' +
+                                    '<div class="input-group-addon ml-3">' +
+                                    '<a href="javascript:void(0)" class="btn btn-danger remove_{{ $siswaDetail->kriteria_id }}"><i class="fa fa-minus"></i></a>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>';
+                            @endif
+
+                            $('.fieldGroup_{{ $siswaDetail->kriteria_id }}:last').after(fieldHTML);
+                        @endif
                     @endif
                 @endforeach
             })

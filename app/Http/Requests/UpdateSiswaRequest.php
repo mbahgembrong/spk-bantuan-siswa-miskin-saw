@@ -25,7 +25,8 @@ class UpdateSiswaRequest extends FormRequest
     public function rules()
     {
         $rules = Siswa::$rules;
-        
+        $rules['foto'] = 'nullable|image|mimes:jpeg,jpg,png,gif';
+
         return $rules;
     }
 }

@@ -27,7 +27,7 @@ class SiswaController extends AppBaseController
     public function index(Request $request)
     {
         /** @var Siswa $siswas */
-        $siswas = Siswa::all();
+        $siswas = Siswa::orderBy('created_at', 'DESC')->get();
 
         return view('siswas.index')
             ->with('siswas', $siswas);
@@ -79,6 +79,8 @@ class SiswaController extends AppBaseController
             $destinationPath = public_path('/storage/siswas/foto');
             $foto->move($destinationPath, $name);
             $input['foto'] = $name;
+        } else {
+            unset($input['foto']);
         }
         $kriteriaSingle = [];
         $kriteriaMultiple = [];
@@ -89,6 +91,7 @@ class SiswaController extends AppBaseController
                 $kriteriaMultiple[$key] = $value;
             }
         }
+
         /** @var Siswa $siswa */
         $siswa = Siswa::create($input);
         foreach ($kriteriaSingle as $key => $value) {
@@ -98,7 +101,7 @@ class SiswaController extends AppBaseController
                 'kriteria_id' => $key,
                 'kriteria_detail_id' => $value,
                 'bobot' => $kriteria->bobot,
-                'keterangan' => $kriteria->nama
+                'keterangan' => $kriteria->nama,
             ]);
         }
         foreach ($kriteriaMultiple as $key => $value) {
@@ -116,10 +119,11 @@ class SiswaController extends AppBaseController
                         'siswa_detail_id' => $siswaDetail->id,
                         'kriteria_id' => $kriteriaId,
                         'kriteria_detail_id' => $value,
-                        'bobot' => $kriteria->bobot ??0,
-                        'keterangan' => $kriteriaMultiple['keterangan_' . $kriteriaId][$key]
+                        'bobot' => $kriteria->bobot ?? 0,
+                        'keterangan' => $kriteriaMultiple['keterangan_' . $kriteriaId][$key],
+                        'nilai' => $kriteriaMultiple['nilai_' . $kriteriaId][$key] ?? null,
                     ]);
-                    $bobot += $kriteria->bobot??0;
+                    $bobot += $kriteria->bobot ?? 0;
                 }
                 $siswaDetail->bobot = $bobot / $countSubSiswaDetail;
                 $siswaDetail->save();
@@ -204,6 +208,7 @@ class SiswaController extends AppBaseController
                 $kriteriaMultiple[$key] = $value;
             }
         }
+
         if (is_null($request->nisn)) {
             $yearNisn = substr(Carbon::createFromFormat('d/m/Y', $request->tanggal_lahir)->format('Y'), 2);
             $digits = 4;
@@ -236,10 +241,11 @@ class SiswaController extends AppBaseController
                 'siswa_id' => $siswa->id,
                 'kriteria_id' => $key,
                 'kriteria_detail_id' => $value,
-                'bobot' => $kriteria->bobot ??0,
-                'keterangan' => $kriteria->nama
+                'bobot' => $kriteria->bobot ?? 0,
+                'keterangan' => $kriteria->nama,
             ]);
         }
+
         foreach ($kriteriaMultiple as $key => $value) {
             if (preg_match('/^bobot+_[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/', $key)) {
                 $kriteriaId = str_replace('bobot_', '', $key);
@@ -250,15 +256,17 @@ class SiswaController extends AppBaseController
                 $bobot = 0;
                 $countSubSiswaDetail = count($kriteriaMultiple[$key]);
                 foreach ($kriteriaMultiple['bobot_' . $kriteriaId] as $key => $value) {
+                    dd($kriteriaMultiple);
                     $kriteria = Kriteriadetail::find($value);
                     SubSiswaDetail::create([
                         'siswa_detail_id' => $siswaDetail->id,
                         'kriteria_id' => $kriteriaId,
                         'kriteria_detail_id' => $value,
-                        'bobot' => $kriteria->bobot ??0,
-                        'keterangan' => $kriteriaMultiple['keterangan_' . $kriteriaId][$key]
+                        'bobot' => $kriteria->bobot ?? 0,
+                        'keterangan' => $kriteriaMultiple['keterangan_' . $kriteriaId][$key],
+                        'nilai' => $kriteriaMultiple['nilai_' . $kriteriaId][$key] ?? null,
                     ]);
-                    $bobot += $kriteria->bobot??0;
+                    $bobot += $kriteria->bobot ?? 0;
                 }
                 $siswaDetail->bobot = $bobot / $countSubSiswaDetail;
                 $siswaDetail->save();

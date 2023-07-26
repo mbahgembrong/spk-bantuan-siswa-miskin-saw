@@ -58,4 +58,14 @@ class SiswaDetail extends Model
     {
         return $this->hasMany(SubSiswaDetail::class, 'siswa_detail_id', 'id');
     }
+
+    /**
+     * Get the kriteria that owns the SiswaDetail
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function kriteria(): BelongsTo
+    {
+        return $this->belongsTo(Kriteria::class, 'kriteria_id');
+    }
 }

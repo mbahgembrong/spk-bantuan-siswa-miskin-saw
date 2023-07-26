@@ -27,7 +27,7 @@ class SubSiswaDetail extends Model
         'kriteria_detail_id',
         'bobot',
         'keterangan',
-
+        'nilai'
     ];
 
     /**
