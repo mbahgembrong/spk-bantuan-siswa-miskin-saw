@@ -162,6 +162,7 @@
                     </tr>
                 `;
                 $('.table tbody').append(row);
+                changeBobot()
             });
 
             $(document).on('change', '.nama', function(e) {
@@ -455,7 +456,7 @@
                 let totalBobot = 0;
                 $('.table tbody tr').each(function(index, el) {
                     // chnage bobot
-                    totalBobot += parseInt($(el).find('.bobot').val());
+                    totalBobot += parseInt($(el).find('.bobot').val() || 0);
                 });
                 $('tfoot tr th:nth-child(2)').html(totalBobot);
                 $('tfoot tr th:nth-child(3)').html((totalBobot) / 100);
